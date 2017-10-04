@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>frint | Frint</title>
+  </head>
+
+  <body>
+    <nav class="nav">
+      <div class="container">
+        <div class="nav-left">
+  <a href="/" class="nav-item brand">
+    <img alt="Frint" class="dark" src="/img/frint-logo-7a7a7a.png" />
+    <img alt="Frint" class="light" src="/img/frint-logo-fff.png" />
+  </a>
+
+  <a href="/docs" class="nav-item is-tab">
+    Documentation
+  </a>
+
+  <a href="/guides" class="nav-item is-tab">
+    Guides
+  </a>
+
+  <a href="/repl" class="nav-item is-tab">
+    REPL
+  </a>
+
+  <a href="/about" class="nav-item is-tab">
+    About
+  </a>
+</div>
+
+<div class="nav-right">
+  <div class="field nav-item">
+    <p class="control has-icon">
+      <input id="doc-search-text-box" class="input" type="text" placeholder="Search...">
+      <span class="icon is-small">
+        <i class="fa fa-search"></i>
+      </span>
+    </p>
+  </div>
+</div>
+
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-one-quarter">
+            <div class="menu-container docs">
+  <aside class="menu docs">
+    <p class="menu-label">
+      Quickstart
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/hello-world">Hello World</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Packages
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/packages/frint">frint</a></li>
+      <li><a href="/docs/packages/frint-store">frint-store</a></li>
+      <li><a href="/docs/packages/frint-data">frint-data</a></li>
+      <li><a href="/docs/packages/frint-react">frint-react</a></li>
+      <li><a href="/docs/packages/frint-react-server">frint-react-server</a></li>
+      <li><a href="/docs/packages/frint-router">frint-router</a></li>
+      <li><a href="/docs/packages/frint-router-react">frint-router-react</a></li>
+      <li><a href="/docs/packages/frint-cli">frint-cli</a></li>
+      <li><a href="/docs/packages/frint-config">frint-config</a></li>
+      <li><a href="/docs/packages/frint-component-utils">frint-component-utils</a></li>
+      <li><a href="/docs/packages/frint-component-handlers">frint-component-handlers</a></li>
+      <li><a href="/docs/packages/frint-test-utils">frint-test-utils</a></li>
+      <li><a href="/docs/packages/frint-compat">frint-compat</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Migration
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/migration/v1">Migrating to v1.x</a></li>
+      <li><a href="/docs/migration/v2">Migrating to v2.x</a></li>
+      <li><a href="/docs/migration/v3">Migrating to v3.x</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Contributing
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/contributing/maintainers">Maintainers guide</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Project
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/changelog">Changelog</a></li>
+    </ul>
+  </aside>
+</div>
+
+          </div>
+
+          <div class="column content">
+            <h1 id="frint">frint</h1>
+<p><a href="https://www.npmjs.com/package/frint"><img src="https://img.shields.io/npm/v/frint.svg" alt="npm"></a></p>
+<blockquote>
+<p>The base of Frint</p>
+</blockquote>
+<!-- MarkdownTOC autolink=true bracket=round -->
+<ul>
+<li><a href="#guide">Guide</a><ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#terminologies">Terminologies</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#creating-and-registering-apps">Creating and registering apps</a></li>
+<li><a href="#understanding-providers">Understanding Providers</a></li>
+</ul>
+</li>
+<li><a href="#api">API</a><ul>
+<li><a href="#app">App</a></li>
+<li><a href="#createapp">createApp</a></li>
+<li><a href="#app-1">app</a></li>
+</ul>
+</li>
+</ul>
+<!-- /MarkdownTOC -->
+<hr>
+<h1 id="guide">Guide</h1>
+<h2 id="installation">Installation</h2>
+<p>With <a href="https://www.npmjs.com/">npm</a>:</p>
+<pre><code>$ npm install --save frint
+</code></pre><p>Via <a href="https://unpkg.com">unpkg</a> CDN:</p>
+<pre><code class="lang-html">&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.0.1/Rx.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;script src=&quot;https://unpkg.com/frint@latest/dist/frint.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+  // available as `window.Frint`
+&lt;/script&gt;
+</code></pre>
+<h2 id="terminologies">Terminologies</h2>
+<ul>
+<li><code>Root App</code>: The top-most parent App, where other Apps get registered to.</li>
+<li><code>App</code>: Apps that register themselves to Root App.</li>
+<li><code>Provider</code>: Dependency for your apps.</li>
+</ul>
+<h2 id="usage">Usage</h2>
+<p>Let&#39;s import the necessary functions from the library first:</p>
+<pre><code class="lang-js">const Frint = require(&#39;frint&#39;);
+const { createApp } = Frint;
+</code></pre>
+<p>Now we can create our App:</p>
+<pre><code class="lang-js">const RootApp = createApp({ name: &#39;MyAppName&#39; });
+</code></pre>
+<p>Instantiate the Root app:</p>
+<pre><code class="lang-js">const app = new RootApp(); // now you have the Root app&#39;s instance
+
+// usually we set the root app to `window.app`,
+// so apps coming in from separate bundles can register themselves
+window.app = app;
+</code></pre>
+<h2 id="creating-and-registering-apps">Creating and registering apps</h2>
+<pre><code class="lang-js">const { createApp } = Frint;
+
+const MyApp = createApp({ name: &#39;MyAppName&#39; });
+</code></pre>
+<p>To register the App in your Root App:</p>
+<pre><code class="lang-js">window.app.registerApp(MyApp);
+</code></pre>
+<h2 id="understanding-providers">Understanding Providers</h2>
+<p>Providers are dependencies for your Frint application (not to be confused with <code>npm</code> packages).</p>
+<p>They can be set at Root app level, at App level, or even only at Root app level but cascade them to other Apps.</p>
+<h3 id="direct-values">Direct values</h3>
+<p>For values that are already known:</p>
+<pre><code class="lang-js">const RootApp = createApp({
+  name: &#39;MyAppName&#39;,
+  providers: [
+    {
+      name: &#39;foo&#39;,
+      useValue: &#39;foo value here&#39;
+    }
+  ]
+});
+
+const app = new RootApp();
+app.get(&#39;foo&#39;) === &#39;foo value here&#39;;
+</code></pre>
+<h3 id="generated-values-from-factories">Generated values from factories</h3>
+<p>If you want to get the value from a function (will be called only once during App construction):</p>
+<pre><code class="lang-js">const RootApp = createApp({
+  name: &#39;MyAppName&#39;,
+  providers: [
+    {
+      name: &#39;bar&#39;,
+      useFactory: function () {
+        return &#39;bar value&#39;;
+      }
+    },
+  ]
+});
+
+const app = new RootApp();
+app.get(&#39;bar&#39;) === &#39;bar value&#39;;
+</code></pre>
+<h3 id="classes">Classes</h3>
+<p>You can also have classes defined as providers. They will be instantiated when the App is constructed, and then made available to you:</p>
+<pre><code class="lang-js">class Baz {
+  getValue() {
+    return &#39;baz value&#39;;
+  }
+}
+
+const RootApp = createApp({
+  name: &#39;MyAppName&#39;,
+  providers: [
+    {
+      name: &#39;baz&#39;,
+      useClass: Baz
+    }
+  ]
+});
+
+const app = new RootApp();
+app.get(&#39;baz&#39;).getValue() === &#39;baz value&#39;;
+</code></pre>
+<h3 id="cascading">Cascading</h3>
+<p>If you wish to cascade a provider from Root App to other Apps, you can:</p>
+<pre><code class="lang-js">const RootApp = createApp({
+  name: &#39;MyRootApp&#39;,
+  providers: [
+    {
+      name: &#39;window&#39;,
+      useValue: window, // the global `window` object
+      cascade: true,
+    }
+  ]
+});
+
+const MyApp = createApp({
+  name: &#39;MyApp&#39;
+});
+
+const app = new RootApp();
+app.registerApp(MyApp);
+
+app.get(&#39;window&#39;) === window;
+app.getAppInstance(&#39;MyApp&#39;).get(&#39;window&#39;) === window;
+</code></pre>
+<h3 id="reserved-provider-names">Reserved provider names</h3>
+<ul>
+<li><code>app</code>: The current App in scope</li>
+<li><code>rootApp</code>: Always refers to the top-most App (which is Root)</li>
+</ul>
+<h3 id="dependencies">Dependencies</h3>
+<p>Providers can also list their dependencies (by their names).</p>
+<pre><code class="lang-js">class Baz {
+  constructor({ foo, bar, app }) {
+    // I have access to both `foo` and `bar` here.
+    // And I can access the scoped `app` instance too.
+  }
+}
+
+const RootApp = createApp({
+  name: &#39;MyRootApp&#39;,
+  providers: [
+    {
+      name: &#39;foo&#39;,
+      useValue: &#39;foo value&#39;
+    },
+    {
+      name: &#39;bar&#39;,
+      useFactory: function ({ foo }) {
+        return `In bar, I have foo&#39;s value: ${foo}`
+      },
+      deps: [&#39;foo&#39;] // value&#39;s of provider names listed here will be fed as arguments
+    },
+    {
+      name: &#39;baz&#39;,
+      useClass: Baz,
+      deps: [&#39;foo&#39;, &#39;bar&#39;, &#39;app&#39;]
+    }
+  ],
+})
+</code></pre>
+<h3 id="scoped">Scoped</h3>
+<p>When cascading providers from Root to other Apps, it is likely you may want to scope those values by the App they are targeting. It is applicable in only <code>useFactory</code> and <code>useClass</code> usage, since they generate values.</p>
+<pre><code class="lang-js">const RootApp = createApp({
+  name: &#39;MyRootApp&#39;,
+  providers: [
+    {
+      name: &#39;theNameOfTheApp&#39;,
+      useFactory: function ({ app }) {
+        return app.app.getName();
+      },
+      deps: [&#39;app&#39;],
+      cascade: true,
+      scoped: true,
+    }
+  ]
+});
+
+const MyApp = createApp({
+  name: &#39;MyApp&#39;
+});
+
+const app = new RootApp();
+app.registerApp(MyApp);
+
+app.get(&#39;theNameOfTheApp&#39;) === &#39;MyRootApp&#39;;
+app.getAppInstance(&#39;MyApp&#39;).get(&#39;theNameOfTheApp&#39;) === &#39;MyApp&#39;;
+</code></pre>
+<hr>
+<h1 id="api">API</h1>
+<h2 id="app">App</h2>
+<blockquote>
+<p>App</p>
+</blockquote>
+<p>The base App class.</p>
+<h2 id="createapp">createApp</h2>
+<blockquote>
+<p>createApp(options)</p>
+</blockquote>
+<h3 id="arguments">Arguments</h3>
+<ol>
+<li><code>options</code> (<code>Object</code>)<ul>
+<li><code>options.name</code>: (<code>String</code> [required]): Name of your App.</li>
+<li><code>options.initialize</code>: (<code>Function</code> [optional]): Called when App is constructed.</li>
+<li><code>options.beforeDestroy</code>: (<code>Function</code> [optional]): Called when App is about to be destroyed.</li>
+<li><code>options.providers</code>: (<code>Array</code> [optional]): Array of provider objects.</li>
+</ul>
+</li>
+</ol>
+<h3 id="returns">Returns</h3>
+<p><code>App</code>: App class.</p>
+<h2 id="app">app</h2>
+<blockquote>
+<p>const app = new App();</p>
+</blockquote>
+<p>The <code>App</code> instance</p>
+<h3 id="app-getoption">app.getOption</h3>
+<blockquote>
+<p>app.getOption(key)</p>
+</blockquote>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>key</code> (<code>String</code>)</li>
+</ol>
+<h4 id="returns">Returns</h4>
+<p><code>Any</code>.</p>
+<h4 id="example">Example</h4>
+<p><code>app.getOption(&#39;name&#39;)</code> would give you <code>MyAppName</code> string.</p>
+<h3 id="app-getname">app.getName</h3>
+<blockquote>
+<p>app.getName()</p>
+</blockquote>
+<h4 id="returns">Returns</h4>
+<p><code>String</code>: The App&#39;s name.</p>
+<h3 id="app-getrootapp">app.getRootApp</h3>
+<blockquote>
+<p>app.getRootApp()</p>
+</blockquote>
+<h4 id="returns">Returns</h4>
+<p><code>App</code>: Gives you the Root App instance.</p>
+<h3 id="app-getparentapp">app.getParentApp</h3>
+<blockquote>
+<p>app.getParentApp()</p>
+</blockquote>
+<h4 id="returns">Returns</h4>
+<p><code>App</code>: Gives you the immediate Parent App instance.</p>
+<h3 id="app-getparentapps">app.getParentApps</h3>
+<blockquote>
+<p>app.getParentApps()</p>
+</blockquote>
+<h3 id="returns">Returns</h3>
+<p><code>Array</code>: Array of parent apps, with immediate parent app as first element and the root app being the last.</p>
+<h3 id="app-getproviders">app.getProviders</h3>
+<blockquote>
+<p>app.getProviders()</p>
+</blockquote>
+<p>Gives you an array of provider definitions as passed while creating the App class.</p>
+<h4 id="returns">Returns</h4>
+<p><code>Array</code>: Array of provider definitions as passed while creating the App class.</p>
+<h3 id="app-getprovider">app.getProvider</h3>
+<blockquote>
+<p>app.getProvider(name)</p>
+</blockquote>
+<p>Gives you the provider&#39;s original definition.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code> (<code>String</code>): The name of the provider that you want</li>
+</ol>
+<h4 id="returns">Returns</h4>
+<p><code>Object</code>: The provider definition</p>
+<p>Not to be confused with the computed value of the provider.</p>
+<h3 id="app-get">app.get</h3>
+<blockquote>
+<p>app.get(name)</p>
+</blockquote>
+<p>Gives you the computed value of the provider.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code> (<code>String</code>): The name of the provider</li>
+</ol>
+<h4 id="returns">Returns</h4>
+<p><code>Any</code>: The computed value of the provider.</p>
+<h3 id="app-getapps-">app.getApps$</h3>
+<blockquote>
+<p>app.getApps$(regionName = null)</p>
+</blockquote>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>regionName</code> (<code>String</code> [optional]): Filter the list of apps by region names if needed</li>
+</ol>
+<h4 id="returns">Returns</h4>
+<p><code>Observable</code>: That emits an array of most recent available Apps.</p>
+<h3 id="app-registerapp">app.registerApp</h3>
+<blockquote>
+<p>app.registerApp(App, options = {})</p>
+</blockquote>
+<p>Register App class to Root app.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>App</code> (<code>App</code>): The App class.</li>
+<li><code>options</code> (<code>Object</code> [optional])<ul>
+<li><code>name</code> (<code>String</code> [optional]): If the App&#39;s name needs to be overridden.</li>
+<li><code>multi</code> (<code>Boolean</code> [optional]): If the App is a multi-instance app (defaults to <code>false</code>)</li>
+</ul>
+</li>
+</ol>
+<h4 id="returns">Returns</h4>
+<p><code>void</code></p>
+<h3 id="app-hasappinstance">app.hasAppInstance</h3>
+<blockquote>
+<p>app.hasAppInstance(name, region = null, regionKey = null)</p>
+</blockquote>
+<p>Check if App instance is available or not.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code> (<code>String</code>): The name of the App that you are looking for</li>
+<li><code>region</code> (<code>String</code> [optional]): If you want the App of a specific region</li>
+<li><code>regionKey</code> (<code>String</code> [optional]): If it is a multi-instance App, then the lookup can be scoped by region&#39;s keys.</li>
+</ol>
+<h4 id="returns">Returns</h4>
+<p><code>Boolean</code>: A flag indicating whether an App instance whose name matches the provided <code>name</code> parameter is available or not</p>
+<h3 id="app-getappinstance">app.getAppInstance</h3>
+<blockquote>
+<p>app.getAppInstance(name, region = null, regionKey = null)</p>
+</blockquote>
+<p>Gets the App instance if available.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code> (<code>String</code>): The name of the App that you are looking for</li>
+<li><code>region</code> (<code>String</code> [optional]): If you want the App of a specific region</li>
+<li><code>regionKey</code> (<code>String</code> [optional]): If it is a multi-instance App, then the lookup can be scoped by region&#39;s keys.</li>
+</ol>
+<h4 id="returns">Returns</h4>
+<p><code>App|Boolean</code>: The app instance, or false if not availble.</p>
+<h3 id="app-getapponceavailable-">app.getAppOnceAvailable$</h3>
+<blockquote>
+<p>app.getAppOnceAvailable$(name, region = null, regionKey = null)</p>
+</blockquote>
+<p>Returns an Observable, which emits with the App&#39;s instance once it is available.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code> (<code>String</code>): The name of the App that you are looking for</li>
+<li><code>region</code> (<code>String</code> [optional]): If you want the App of a specific region</li>
+<li><code>regionKey</code> (<code>String</code> [optional]): If it is a multi-instance App, then the lookup can be scoped by region&#39;s keys.</li>
+</ol>
+<h4 id="returns">Returns</h4>
+<p><code>Observable</code>: Emits the App instance once found, only once.</p>
+<h3 id="app-instantiateapp">app.instantiateApp</h3>
+<blockquote>
+<p>app.instantiateApp(name, region = null, regionKey = null)</p>
+</blockquote>
+<p>Instantiates the registered App class, (for the targetted region/regionKey if it is a multi-instance App).</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code> (<code>String</code>): The name of the App that you are looking for</li>
+<li><code>region</code> (<code>String</code> [optional]): If you want the App of a specific region</li>
+<li><code>regionKey</code> (<code>String</code> [optional]): If it is a multi-instance App, then the lookup can be scoped by region&#39;s keys.</li>
+</ol>
+<h4 id="returns">Returns</h4>
+<p><code>Array</code>: The updated collection of apps.</p>
+<h3 id="app-destroyapp">app.destroyApp</h3>
+<blockquote>
+<p>app.destroyApp(name, region = null, regionKey = null)</p>
+</blockquote>
+<p>Destroys App instance.</p>
+<h4 id="arguments">Arguments</h4>
+<ol>
+<li><code>name</code> (<code>String</code>): The name of the App that you are looking for</li>
+<li><code>region</code> (<code>String</code> [optional]): If you want the App of a specific region</li>
+<li><code>regionKey</code> (<code>String</code> [optional]): If it is a multi-instance App, then the lookup can be scoped by region&#39;s keys.</li>
+</ol>
+<h4 id="returns">Returns</h4>
+<p><code>void</code>.</p>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        <strong>FrintJS</strong> by <a href="https://travix.com">Travix International B.V.</a>.
+        The source code is licensed under
+        <a href="https://github.com/Travix-International/frint/blob/master/LICENSE">MIT</a>.
+      </p>
+      <p>
+        <a class="icon" href="https://github.com/Travix-International/frint">
+          <i class="fa fa-github"></i>
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    <style>
+  .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-solarizedlight.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
+<script src="/js/site.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+<script type="text/javascript">
+docsearch({
+  apiKey: '897a7279c47670a5c4b474ee84350387',
+  indexName: 'frint.js',
+  inputSelector: '#doc-search-text-box',
+  debug: false // Set debug to true if you want to inspect the dropdown
+});
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-93673400-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

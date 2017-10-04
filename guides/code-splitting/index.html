@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Code splitting across multiple bundles | Frint</title>
+  </head>
+
+  <body>
+    <nav class="nav">
+      <div class="container">
+        <div class="nav-left">
+  <a href="/" class="nav-item brand">
+    <img alt="Frint" class="dark" src="/img/frint-logo-7a7a7a.png" />
+    <img alt="Frint" class="light" src="/img/frint-logo-fff.png" />
+  </a>
+
+  <a href="/docs" class="nav-item is-tab">
+    Documentation
+  </a>
+
+  <a href="/guides" class="nav-item is-tab">
+    Guides
+  </a>
+
+  <a href="/repl" class="nav-item is-tab">
+    REPL
+  </a>
+
+  <a href="/about" class="nav-item is-tab">
+    About
+  </a>
+</div>
+
+<div class="nav-right">
+  <div class="field nav-item">
+    <p class="control has-icon">
+      <input id="doc-search-text-box" class="input" type="text" placeholder="Search...">
+      <span class="icon is-small">
+        <i class="fa fa-search"></i>
+      </span>
+    </p>
+  </div>
+</div>
+
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-one-quarter">
+            <div class="menu-container docs">
+  <aside class="menu docs">
+    <p class="menu-label">
+      Step by step guides
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/hello-world">Hello World</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Concepts
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/apps">Apps</a></li>
+      <li><a href="/guides/providers">Providers</a></li>
+      <li><a href="/guides/components">Components</a></li>
+      <li><a href="/guides/regions">Regions</a></li>
+      <li><a href="/guides/observables">Observables</a></li>
+      <li><a href="/guides/higher-order-components">Higher-Order Components</a></li>
+    </ul>
+
+    <p class="menu-label">
+      How TOs
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/state-management">State management</a></li>
+    </ul>
+
+    <ul class="menu-list">
+      <li><a href="/guides/routing">Routing</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Advanced
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/code-splitting">Code splitting</a></li>
+      <li><a href="/guides/async-loading">Async loading</a></li>
+    </ul>
+  </aside>
+</div>
+
+          </div>
+
+          <div class="column content">
+            <h1 id="code-splitting-across-multiple-bundles">Code splitting across multiple bundles</h1>
+<!-- MarkdownTOC depth=2 autolink=true bracket=round -->
+<ul>
+<li><a href="#what-is-code-splitting">What is code splitting</a></li>
+<li><a href="#the-bundles">The bundles</a></li>
+<li><a href="#illustration">Illustration</a></li>
+<li><a href="#install-dependencies">Install dependencies</a></li>
+<li><a href="#vendors-bundle">Vendors bundle</a></li>
+<li><a href="#externals">Externals</a></li>
+<li><a href="#app-bundles">App bundles</a></li>
+<li><a href="#apps">Apps</a></li>
+</ul>
+<!-- /MarkdownTOC -->
+<h2 id="what-is-code-splitting">What is code splitting</h2>
+<p>Imagine you have a very large application. And you have your application divided into multiple apps. And not all apps need to be served to the browser at the same time since they target different pages.</p>
+<p>To serve them individually, we can bundle them separately and load them independently via <code>&lt;script&gt;</code> tags.</p>
+<h2 id="the-bundles">The bundles</h2>
+<p>We can divide our bundles like this:</p>
+<ul>
+<li><code>vendors.js</code>: contains Lodash, RxJS, Frint, etc</li>
+<li><code>root.js</code>: our Root app&#39;s bundle</li>
+<li><code>app-foo.js</code>: App Foo&#39;s bundle</li>
+<li><code>app-bar.js</code>: App Bar&#39;s bundle</li>
+<li>etc...</li>
+</ul>
+<p>We also want to make sure that our root and app bundles would not duplicate any of the libraries that we already have in <code>vendors.js</code>.</p>
+<h2 id="illustration">Illustration</h2>
+<p><img src="/img/frint-code-splitting.png" alt="code splitting"></p>
+<p>Illustration of a multiple bundles loading themselves in the browser, and then rendering the final output.</p>
+<p>We will see some code examples below.</p>
+<h2 id="install-dependencies">Install dependencies</h2>
+<p>First the vendors:</p>
+<pre><code>$ npm install --save lodash rxjs react react-dom prop-types frint frint-store frint-model frint-react
+</code></pre><p>And the devDependencies for bundling:</p>
+<pre><code>$ npm install --save babel-core babel-loader babel-preset-travix webpack
+</code></pre><h2 id="vendors-bundle">Vendors bundle</h2>
+<p>Goal is to generate a <code>vendors.js</code> file, which once loaded in the browser would expose the dependencies directly under <code>window</code> object.</p>
+<p>The entry file for the budle can look something like this:</p>
+<pre><code class="lang-js">// vendors_entry.js
+window._ = require(&#39;lodash&#39;);
+window.Rx = require(&#39;rxjs&#39;);
+
+window.React = require(&#39;react&#39;);
+window.ReactDOM = require(&#39;react-dom&#39;);
+
+window.Frint = require(&#39;frint&#39;);
+window.FrintStore = require(&#39;frint-store&#39;);
+window.FrintModel = require(&#39;frint-model&#39;);
+window.FrintReact = require(&#39;frint-react&#39;);
+</code></pre>
+<p>The webpack configuration may look something like this:</p>
+<pre><code class="lang-js">// vendors-webpack.config.js
+module.exports = {
+  entry: __dirname + &#39;/vendors_entry.js&#39;,
+  output: {
+    path: __dirname + &#39;/build/js&#39;,
+    filename: &#39;vendors.js&#39;
+  }
+};
+</code></pre>
+<p>Running this command now would generate a new file at <code>./build/vendors.js</code>:</p>
+<pre><code>$ ./node_modules/.bin/webpack --config ./vendors-webpack.config.js
+</code></pre><h2 id="externals">Externals</h2>
+<p>We can create a file for listing all our dependencies&#39; names, that we can reuse in webpack configuration for our App bundles:</p>
+<pre><code class="lang-js">// externals.js
+module.exports = {
+  // npm package name =&gt; name under `window` in browser
+
+  &#39;lodash&#39;: &#39;_&#39;,
+  &#39;rxjs&#39;: &#39;Rx&#39;,
+
+  &#39;react&#39;: &#39;React&#39;,
+  &#39;react-dom&#39;: &#39;ReactDOM&#39;,
+
+  &#39;frint&#39;: &#39;Frint&#39;,
+  &#39;frint-store&#39;: &#39;FrintStore&#39;,
+  &#39;frint-model&#39;: &#39;FrintModel&#39;,
+  &#39;frint-react&#39;: &#39;FrintReact&#39;
+};
+</code></pre>
+<h2 id="app-bundles">App bundles</h2>
+<p>Webpack config for your root app may look like this:</p>
+<pre><code class="lang-js">// root-webpack.config.js
+const externals = require(&#39;./externals&#39;);
+
+module.exports = {
+  entry: __dirname + &#39;/path/to/root/app/entry&#39;,
+  output: {
+    path: __dirname + &#39;/build&#39;,
+    filename: &#39;root.js&#39;
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js)$/,
+        loader: &#39;babel-loader&#39;,
+        query: {
+          presets: [
+            &#39;travix&#39;
+          ]
+        }
+      }
+    ]
+  },
+
+  // we reuse the same externals list across all configuration files
+  externals: externals,
+};
+</code></pre>
+<p>Running this command would then generate <code>./build/rootApp.js</code> file:</p>
+<pre><code>$ ./node_modules/.bin/webpack --config root-webpack.config.js
+</code></pre><p>The entry file of your root app may look like this:</p>
+<pre><code class="lang-js">import { render } from &#39;frint-react&#39;;
+
+import App from &#39;./app&#39;;
+
+window.app = new App();
+render(window.app, document.getElementById(&#39;root&#39;));
+</code></pre>
+<h2 id="apps">Apps</h2>
+<p>Apps bundling can follow the same approach as root app bundling like above.</p>
+<p>The entry file of an App may look like this:</p>
+<pre><code class="lang-js">import App from &#39;./app&#39;;
+
+window.app.registerApp(App, {
+  regions: [&#39;sidebar&#39;]
+});
+</code></pre>
+<p>Visit the <a href="/guides/async-loading">Async loading</a> guide to learn how you can
+loading root and child apps asynchronously.</p>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        <strong>FrintJS</strong> by <a href="https://travix.com">Travix International B.V.</a>.
+        The source code is licensed under
+        <a href="https://github.com/Travix-International/frint/blob/master/LICENSE">MIT</a>.
+      </p>
+      <p>
+        <a class="icon" href="https://github.com/Travix-International/frint">
+          <i class="fa fa-github"></i>
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    <style>
+  .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-solarizedlight.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
+<script src="/js/site.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+<script type="text/javascript">
+docsearch({
+  apiKey: '897a7279c47670a5c4b474ee84350387',
+  indexName: 'frint.js',
+  inputSelector: '#doc-search-text-box',
+  debug: false // Set debug to true if you want to inspect the dropdown
+});
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-93673400-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Maintainers guide | Frint</title>
+  </head>
+
+  <body>
+    <nav class="nav">
+      <div class="container">
+        <div class="nav-left">
+  <a href="/" class="nav-item brand">
+    <img alt="Frint" class="dark" src="/img/frint-logo-7a7a7a.png" />
+    <img alt="Frint" class="light" src="/img/frint-logo-fff.png" />
+  </a>
+
+  <a href="/docs" class="nav-item is-tab">
+    Documentation
+  </a>
+
+  <a href="/guides" class="nav-item is-tab">
+    Guides
+  </a>
+
+  <a href="/repl" class="nav-item is-tab">
+    REPL
+  </a>
+
+  <a href="/about" class="nav-item is-tab">
+    About
+  </a>
+</div>
+
+<div class="nav-right">
+  <div class="field nav-item">
+    <p class="control has-icon">
+      <input id="doc-search-text-box" class="input" type="text" placeholder="Search...">
+      <span class="icon is-small">
+        <i class="fa fa-search"></i>
+      </span>
+    </p>
+  </div>
+</div>
+
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-one-quarter">
+            <div class="menu-container docs">
+  <aside class="menu docs">
+    <p class="menu-label">
+      Quickstart
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/hello-world">Hello World</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Packages
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/packages/frint">frint</a></li>
+      <li><a href="/docs/packages/frint-store">frint-store</a></li>
+      <li><a href="/docs/packages/frint-data">frint-data</a></li>
+      <li><a href="/docs/packages/frint-react">frint-react</a></li>
+      <li><a href="/docs/packages/frint-react-server">frint-react-server</a></li>
+      <li><a href="/docs/packages/frint-router">frint-router</a></li>
+      <li><a href="/docs/packages/frint-router-react">frint-router-react</a></li>
+      <li><a href="/docs/packages/frint-cli">frint-cli</a></li>
+      <li><a href="/docs/packages/frint-config">frint-config</a></li>
+      <li><a href="/docs/packages/frint-component-utils">frint-component-utils</a></li>
+      <li><a href="/docs/packages/frint-component-handlers">frint-component-handlers</a></li>
+      <li><a href="/docs/packages/frint-test-utils">frint-test-utils</a></li>
+      <li><a href="/docs/packages/frint-compat">frint-compat</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Migration
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/migration/v1">Migrating to v1.x</a></li>
+      <li><a href="/docs/migration/v2">Migrating to v2.x</a></li>
+      <li><a href="/docs/migration/v3">Migrating to v3.x</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Contributing
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/contributing/maintainers">Maintainers guide</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Project
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/changelog">Changelog</a></li>
+    </ul>
+  </aside>
+</div>
+
+          </div>
+
+          <div class="column content">
+            <h1 id="maintainers">Maintainers</h1>
+<!-- MarkdownTOC autolink=true bracket=round -->
+<ul>
+<li><a href="#pull-requests">Pull Requests</a></li>
+<li><a href="#development">Development</a><ul>
+<li><a href="#setup">Setup</a></li>
+<li><a href="#scripts">Scripts</a></li>
+<li><a href="#dependencies">Dependencies</a></li>
+</ul>
+</li>
+<li><a href="#releases">Releases</a><ul>
+<li><a href="#canary-releases">Canary releases</a></li>
+</ul>
+</li>
+<li><a href="#changelogs">Changelogs</a><ul>
+<li><a href="#github-api-token">GitHub API Token</a></li>
+<li><a href="#pushing-changelogmd">Pushing <code>CHANGELOG.md</code></a></li>
+</ul>
+</li>
+<li><a href="#packages">Packages</a><ul>
+<li><a href="#list-packages">List packages</a></li>
+<li><a href="#list-updated-packages">List updated packages</a></li>
+</ul>
+</li>
+<li><a href="#site">Site</a><ul>
+<li><a href="#developing-the-site">Developing the site</a></li>
+<li><a href="#publishing-the-site">Publishing the site</a></li>
+</ul>
+</li>
+</ul>
+<!-- /MarkdownTOC -->
+<h2 id="pull-requests">Pull Requests</h2>
+<p>When merging Pull Requests on GitHub, use the <a href="https://github.com/blog/2141-squash-your-commits">squash and merge</a> button, so that our timeline of master branch is linear.</p>
+<h2 id="development">Development</h2>
+<p>We use <a href="https://github.com/lerna/lerna/">Lerna</a> for managing our monorepo. All our packages can be found in <a href="./packages">packages</a> directory.</p>
+<p>To start developing the packages:</p>
+<h3 id="setup">Setup</h3>
+<p>Clone the repository, and run:</p>
+<pre><code>$ npm install
+$ npm run bootstrap
+</code></pre><h3 id="scripts">Scripts</h3>
+<p>Now you can run the <code>npm</code> scripts:</p>
+<pre><code>$ npm run lint
+$ npm run test
+$ npm run cover
+</code></pre><p>Which are shortcuts for:</p>
+<pre><code>$ ./node_modules/.bin/lerna run lint
+$ ./node_modules/.bin/lerna run test
+$ ./node_modules/.bin/lerna run cover
+</code></pre><h4 id="runnings-scripts-for-individual-packages">Runnings scripts for individual packages</h4>
+<p>To run npm scripts at individual package level:</p>
+<pre><code>$ ./node_modules/.bin/lerna run --scope frint-react test
+</code></pre><h3 id="dependencies">Dependencies</h3>
+<p>We keep all the <code>devDependencies</code> at root <code>package.json</code> for avoiding unnecessary duplication.</p>
+<p>To install dependencies at individual package level, just update their <code>package.json</code> (even if the dependency is a package from this repo itself), and run this from root:</p>
+<pre><code>$ npm run bootstrap
+</code></pre><p>The <code>bootstrap</code> script takes care of installing and linking the dependencies in your packages.</p>
+<h2 id="releases">Releases</h2>
+<p>To publish a new release:</p>
+<pre><code>$ make release
+</code></pre><p>You will be prompted to select a semver (patch/minor/major), and once chosen, all your packages (that have changed) will be published to <code>npm</code>.</p>
+<h3 id="canary-releases">Canary releases</h3>
+<p>If you wish to release your packages as canary versions:</p>
+<pre><code>$ make release-canary
+</code></pre><p>Doing so would only publish your packages to <code>npm</code>, without affecting your git repository in any way.</p>
+<p>And the versions on <code>npm</code> would look like <code>1.0.0-alpha.12345678</code>, where the last part is your commit hash.</p>
+<p>Canary releases are useful if you want to publish nightly releases for example.</p>
+<h2 id="changelogs">Changelogs</h2>
+<p>Since we use <a href="https://github.com/lerna/lerna/">lerna</a> for managing our monorepo, we are using <a href="https://github.com/lerna/lerna-changelog">lerna-changelog</a> for generating our changelogs.</p>
+<p>Changelog for a particular version can be generated as follows:</p>
+<pre><code>$ make changelog GITHUB_API_TOKEN=&quot;...&quot; FROM_TAG=&quot;v1.0.0&quot; TO_TAG=&quot;v2.0.0&quot;
+</code></pre><p>Doing so would output the changelog in your Terminal, which you can later add to the <code>CHANGELOG.md</code> file.</p>
+<h3 id="github-api-token">GitHub API Token</h3>
+<p>You can generate a token <a href="https://github.com/settings/tokens/new?description=GitHub%20Changelog%20Generator%20token">here</a></p>
+<p>Since this is a public repository, you only need <code>public_repo</code> access for the token.</p>
+<h3 id="pushing-changelog-md-">Pushing <code>CHANGELOG.md</code></h3>
+<p>Once the <code>CHANGELOG.md</code> file is updated, it is up to you to commit and push it to GitHub.</p>
+<p>There is a handy command available:</p>
+<pre><code>$ make push-changelog
+</code></pre><h2 id="packages">Packages</h2>
+<h3 id="list-packages">List packages</h3>
+<p>Show all the packages with their versions in the repository:</p>
+<pre><code>$ make list-packages
+</code></pre><h3 id="list-updated-packages">List updated packages</h3>
+<p>Show packages that have been updated locally, and needs publishing:</p>
+<pre><code>$ make list-updated
+</code></pre><h2 id="site">Site</h2>
+<p>The documentation site at <a href="http://frint.js.org">http://frint.js.org</a> is also managed in this repository.</p>
+<h3 id="developing-the-site">Developing the site</h3>
+<p>For development:</p>
+<pre><code>$ make site-serve
+</code></pre><p>Once the local server is up and running, you can run a separate watcher to refresh the site as you work on the documentation:</p>
+<pre><code>$ make site-watch
+</code></pre><h3 id="publishing-the-site">Publishing the site</h3>
+<p>Builds and deploys the site to GitHub Pages.</p>
+<pre><code>$ make site-publish
+</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        <strong>FrintJS</strong> by <a href="https://travix.com">Travix International B.V.</a>.
+        The source code is licensed under
+        <a href="https://github.com/Travix-International/frint/blob/master/LICENSE">MIT</a>.
+      </p>
+      <p>
+        <a class="icon" href="https://github.com/Travix-International/frint">
+          <i class="fa fa-github"></i>
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    <style>
+  .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-solarizedlight.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
+<script src="/js/site.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+<script type="text/javascript">
+docsearch({
+  apiKey: '897a7279c47670a5c4b474ee84350387',
+  indexName: 'frint.js',
+  inputSelector: '#doc-search-text-box',
+  debug: false // Set debug to true if you want to inspect the dropdown
+});
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-93673400-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

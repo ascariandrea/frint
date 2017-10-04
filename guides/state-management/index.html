@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>State Management | Frint</title>
+  </head>
+
+  <body>
+    <nav class="nav">
+      <div class="container">
+        <div class="nav-left">
+  <a href="/" class="nav-item brand">
+    <img alt="Frint" class="dark" src="/img/frint-logo-7a7a7a.png" />
+    <img alt="Frint" class="light" src="/img/frint-logo-fff.png" />
+  </a>
+
+  <a href="/docs" class="nav-item is-tab">
+    Documentation
+  </a>
+
+  <a href="/guides" class="nav-item is-tab">
+    Guides
+  </a>
+
+  <a href="/repl" class="nav-item is-tab">
+    REPL
+  </a>
+
+  <a href="/about" class="nav-item is-tab">
+    About
+  </a>
+</div>
+
+<div class="nav-right">
+  <div class="field nav-item">
+    <p class="control has-icon">
+      <input id="doc-search-text-box" class="input" type="text" placeholder="Search...">
+      <span class="icon is-small">
+        <i class="fa fa-search"></i>
+      </span>
+    </p>
+  </div>
+</div>
+
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-one-quarter">
+            <div class="menu-container docs">
+  <aside class="menu docs">
+    <p class="menu-label">
+      Step by step guides
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/hello-world">Hello World</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Concepts
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/apps">Apps</a></li>
+      <li><a href="/guides/providers">Providers</a></li>
+      <li><a href="/guides/components">Components</a></li>
+      <li><a href="/guides/regions">Regions</a></li>
+      <li><a href="/guides/observables">Observables</a></li>
+      <li><a href="/guides/higher-order-components">Higher-Order Components</a></li>
+    </ul>
+
+    <p class="menu-label">
+      How TOs
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/state-management">State management</a></li>
+    </ul>
+
+    <ul class="menu-list">
+      <li><a href="/guides/routing">Routing</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Advanced
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/code-splitting">Code splitting</a></li>
+      <li><a href="/guides/async-loading">Async loading</a></li>
+    </ul>
+  </aside>
+</div>
+
+          </div>
+
+          <div class="column content">
+            <h1 id="state-management">State Management</h1>
+<!-- MarkdownTOC depth=2 autolink=true bracket=round -->
+<ul>
+<li><a href="#frint-store"><code>frint-store</code></a></li>
+<li><a href="#store-vs-state">Store vs State</a></li>
+<li><a href="#create-your-app-with-store">Create your App with Store</a><ul>
+<li><a href="#dependencies">Dependencies</a></li>
+<li><a href="#constants">Constants</a></li>
+<li><a href="#action-creators">Action creators</a></li>
+<li><a href="#reducer">Reducer</a></li>
+<li><a href="#root-reducer">Root reducer</a></li>
+<li><a href="#app">App</a></li>
+<li><a href="#async-actions">Async actions</a></li>
+<li><a href="#component">Component</a></li>
+<li><a href="#streaming-props">Streaming props</a></li>
+<li><a href="#render">Render</a></li>
+</ul>
+</li>
+</ul>
+<!-- /MarkdownTOC -->
+<h2 id="-frint-store-"><code>frint-store</code></h2>
+<p>Frint ships with a <code>frint-store</code> package, which enables you to create reducer based stores, and subscribe to state changes using an Observable.</p>
+<p>The concepts are all borrowed from <a href="https://redux.js.org">Redux</a>. And <code>frint-store</code> happens to be a more minimal implementation of that supporting observables, for nicely integrating with the rest of the framework.</p>
+<p>You can find more documentation about the <code>frint-store</code> package <a href="/docs/packages/frint-store">here</a>.</p>
+<h2 id="store-vs-state">Store vs State</h2>
+<p>Store is the main object that holds everything related to state for you. You can dispatch something to it for making changes, while subscribing to state too.</p>
+<p>State happens to be the actual object that represents the current state of your Store, and it can keep streaming as changes are made to it.</p>
+<h2 id="create-your-app-with-store">Create your App with Store</h2>
+<p>Let&#39;s say we want to build an App, that has a plus and minus button for increasing and decreasing a counter value.</p>
+<h3 id="dependencies">Dependencies</h3>
+<p>First install the packages:</p>
+<pre><code>$ npm install --save frint frint-react frint-store
+</code></pre><h3 id="constants">Constants</h3>
+<p>Define constants for action types, that we will reuse in Actions and Reducers:</p>
+<pre><code class="lang-js">// constants/index.js
+export const INCREMENT_COUNTER = &#39;INCREMENT_COUNTER&#39;;
+export const DECREMENT_COUNTER = &#39;DECREMENT_COUNTER&#39;;
+</code></pre>
+<h3 id="action-creators">Action creators</h3>
+<pre><code class="lang-js">// actions/counter.js
+function incrementCounter() {
+  return { type: INCREMENT_COUNTER };
+}
+
+function decrementCounter() {
+  return { type: DECREMENT_COUNTER };
+}
+</code></pre>
+<h3 id="reducer">Reducer</h3>
+<p>Our reducer for counter:</p>
+<pre><code class="lang-js">// reducers/counter.js
+import {
+  INCREMENT_COUNTER,
+  DECREMENT_COUNTER
+} from &#39;../constants&#39;;
+
+const INITIAL_STATE = {
+  value: 0
+};
+
+export default function counter(state = INITIAL_STATE, action) {
+  switch (action.type) {
+    case INCREMENT_COUNTER:
+      return Object.assign({}, {
+        value: state.value + 1
+      });
+
+    case DECREMENT_COUNTER:
+      return Object.assign({}, {
+        value: state.value - 1
+      });
+
+    default:
+      return state;
+  }
+}
+</code></pre>
+<h3 id="root-reducer">Root reducer</h3>
+<p>As your state grows over time, you will end up having lots of code in your reducer. That&#39;s why it is recommended that you split your responsibilities across multiple reducers, and then combine them all into a single root reducer that can be passed to your Store:</p>
+<pre><code class="lang-js">// reducers/index.js
+import { combineReducers } from &#39;frint-store&#39;;
+
+import counterReducer from &#39;./counter&#39;;
+
+export default combineReducers({
+  counter: counterReducer
+});
+</code></pre>
+<h3 id="app">App</h3>
+<p>This is where we would define our Store and pass it to our App as a provider:</p>
+<pre><code class="lang-js">// app/index.js
+import { createApp } from &#39;frint&#39;;
+import { createStore } from &#39;frint-store&#39;;
+
+import rootReducer from &#39;../reducer&#39;;
+
+export default createApp({
+  name: &#39;MyApp&#39;,
+  providers: [
+    {
+      name: &#39;store&#39;,
+      useFactory: function () {
+        const Store = createStore({
+          reducer: rootReducer
+        });
+
+        return new Store();
+      }
+    }
+  ]
+});
+</code></pre>
+<h3 id="async-actions">Async actions</h3>
+<p>What if you would like to support <a href="/docs/packages/frint-store/#async-actions">async actions</a> in your App?</p>
+<p>We can achieve that by changing our provider a bit:</p>
+<pre><code class="lang-js">export default createApp({
+  name: &#39;MyApp&#39;,
+  providers: [
+    {
+      name: &#39;store&#39;,
+      useFactory: function ({ app }) { // the `app` instance via `deps`
+        const Store = createStore({
+          reducer: rootReducer,
+          deps: { app }
+        });
+
+        return new Store();
+      },
+      deps: [&#39;app&#39;] // gives you the `app` instance in `useFactory`
+    }
+  ]
+});
+</code></pre>
+<p>Doing this now allows our Action Creators to asynchronously dispatch further actions:</p>
+<pre><code class="lang-js">// actions/counter.js
+export function incrementCounterAsync() {
+  // instead of returning an object, we return a function
+  return function (dispatch, getState, { app }) {
+    // `dispatch(actionPayload)` can dispatch another action
+    // `getState()` returns the current state object
+    // `app` is available because of `deps`
+
+    setTimeout(function () {
+      dispatch(incrementCounter()); // increment after 2 seconds
+    }, 2000);
+  }
+}
+</code></pre>
+<h3 id="component">Component</h3>
+<p>Now that we have the store ready, it&#39;s time to write our Component:</p>
+<pre><code class="lang-js">// components/Root.js
+import React, { Component } from &#39;react&#39;;
+import { Observable } from &#39;rxjs&#39;;
+import { observe } from &#39;frint-react&#39;;
+
+// our action creators
+import { incrementCounter, decrementCounter } from &#39;../actions/counter&#39;;
+
+// React component
+class Root extends Component {
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;p&gt;Counter value: {this.props.counter}&lt;/p&gt;
+
+        &lt;button onClick={() =&gt; this.props.increment()}&gt;+&lt;/button&gt;
+        &lt;button onClick={() =&gt; this.props.decrement()}&gt;-&lt;/button&gt;
+      &lt;/div&gt;
+    );
+  }
+}
+
+// make our Component reactive
+export default observe(function (app) {
+  const store = app.get(&#39;store&#39;); // the Store instance
+  const state$ = store.getState$(); // state as an observable
+
+  // Observable that maps state to props
+  const stateProps$ = state$.map(function (state) {
+    return {
+      counter: state.counter.value
+    };
+  });
+
+  // Observable for our dispatchable action creators as props
+  const actionProps$ = Observable.of({
+    increment: (...args) =&gt; store.dispatch(incrementCounter(...args)),
+    decrement: (...args) =&gt; store.dispatch(decrementCounter(...args)),
+  });
+
+  // merge the two Observables into one, and return
+  return stateProps$
+    .merge(actionProps$)
+    .scan((props, emitted) =&gt; {
+      return {
+        ...props,
+        ...emitted,
+      };
+    });
+})(Root);
+</code></pre>
+<p>The last thing we need to do is to assign this component to our App as a provider:</p>
+<pre><code class="lang-js">// app/index.js
+import { createApp } from &#39;frint&#39;;
+import { createStore } from &#39;frint-store&#39;;
+
+export default createApp({
+  name: &#39;MyApp&#39;,
+  providers: [
+    {
+      name: &#39;component&#39;,
+      useValue: Root
+    },
+    {
+      name: &#39;store&#39;,
+      // useFactory: ...
+      // deps: ...
+    }
+  ]
+});
+</code></pre>
+<h3 id="streaming-props">Streaming props</h3>
+<p>What we did in the example above for Component, was to create a single Observable that keeps emitting props, and then passed to the Root component when rendered.</p>
+<p>Your components can become complex over time, and may need to handle multiple observables together.</p>
+<p>We ship a handy <code>streamProps</code> function in <code>frint-react</code> package, to make your code shorter. The same component above can be written this way:</p>
+<pre><code class="lang-js">import React, { Component } from &#39;react&#39;;
+import { observe, streamProps } from &#39;frint-react&#39;;
+
+import { incrementCounter, decrementCounter } from &#39;../actions/counter&#39;;
+
+class Root extends Component {
+  render() {
+    // ...
+  }
+}
+
+export default observe(function (app) {
+  return streamProps()
+    // state
+    .set(
+      app.get(&#39;store&#39;).getState$(),
+      state =&gt; ({ counter: state.counter.value })
+    )
+
+    // dispatchable actions
+    .setDispatch({
+      incrementCounter,
+      decrementCounter
+    }, app.get(&#39;store&#39;))
+
+    // generate and return final observable
+    .get$();
+});
+</code></pre>
+<p>You can read more about <code>streamProps</code> in the API documentation <a href="/docs/packages/frint-react/#streamprops">here</a>.</p>
+<h3 id="render">Render</h3>
+<p>Now just render your App, and you can see it live in your browser:</p>
+<pre><code class="lang-js">// index.js
+import { render } from &#39;frint-react&#39;;
+
+import App from &#39;./app&#39;;
+
+window.app = new App();
+render(window.app, document.getElementById(&#39;root&#39;));
+</code></pre>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        <strong>FrintJS</strong> by <a href="https://travix.com">Travix International B.V.</a>.
+        The source code is licensed under
+        <a href="https://github.com/Travix-International/frint/blob/master/LICENSE">MIT</a>.
+      </p>
+      <p>
+        <a class="icon" href="https://github.com/Travix-International/frint">
+          <i class="fa fa-github"></i>
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    <style>
+  .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-solarizedlight.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
+<script src="/js/site.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+<script type="text/javascript">
+docsearch({
+  apiKey: '897a7279c47670a5c4b474ee84350387',
+  indexName: 'frint.js',
+  inputSelector: '#doc-search-text-box',
+  debug: false // Set debug to true if you want to inspect the dropdown
+});
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-93673400-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

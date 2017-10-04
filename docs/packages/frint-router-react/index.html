@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>frint-router-react | Frint</title>
+  </head>
+
+  <body>
+    <nav class="nav">
+      <div class="container">
+        <div class="nav-left">
+  <a href="/" class="nav-item brand">
+    <img alt="Frint" class="dark" src="/img/frint-logo-7a7a7a.png" />
+    <img alt="Frint" class="light" src="/img/frint-logo-fff.png" />
+  </a>
+
+  <a href="/docs" class="nav-item is-tab">
+    Documentation
+  </a>
+
+  <a href="/guides" class="nav-item is-tab">
+    Guides
+  </a>
+
+  <a href="/repl" class="nav-item is-tab">
+    REPL
+  </a>
+
+  <a href="/about" class="nav-item is-tab">
+    About
+  </a>
+</div>
+
+<div class="nav-right">
+  <div class="field nav-item">
+    <p class="control has-icon">
+      <input id="doc-search-text-box" class="input" type="text" placeholder="Search...">
+      <span class="icon is-small">
+        <i class="fa fa-search"></i>
+      </span>
+    </p>
+  </div>
+</div>
+
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-one-quarter">
+            <div class="menu-container docs">
+  <aside class="menu docs">
+    <p class="menu-label">
+      Quickstart
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/hello-world">Hello World</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Packages
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/packages/frint">frint</a></li>
+      <li><a href="/docs/packages/frint-store">frint-store</a></li>
+      <li><a href="/docs/packages/frint-data">frint-data</a></li>
+      <li><a href="/docs/packages/frint-react">frint-react</a></li>
+      <li><a href="/docs/packages/frint-react-server">frint-react-server</a></li>
+      <li><a href="/docs/packages/frint-router">frint-router</a></li>
+      <li><a href="/docs/packages/frint-router-react">frint-router-react</a></li>
+      <li><a href="/docs/packages/frint-cli">frint-cli</a></li>
+      <li><a href="/docs/packages/frint-config">frint-config</a></li>
+      <li><a href="/docs/packages/frint-component-utils">frint-component-utils</a></li>
+      <li><a href="/docs/packages/frint-component-handlers">frint-component-handlers</a></li>
+      <li><a href="/docs/packages/frint-test-utils">frint-test-utils</a></li>
+      <li><a href="/docs/packages/frint-compat">frint-compat</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Migration
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/migration/v1">Migrating to v1.x</a></li>
+      <li><a href="/docs/migration/v2">Migrating to v2.x</a></li>
+      <li><a href="/docs/migration/v3">Migrating to v3.x</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Contributing
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/contributing/maintainers">Maintainers guide</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Project
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/changelog">Changelog</a></li>
+    </ul>
+  </aside>
+</div>
+
+          </div>
+
+          <div class="column content">
+            <h1 id="frint-router-react">frint-router-react</h1>
+<p><a href="https://www.npmjs.com/package/frint-router-react"><img src="https://img.shields.io/npm/v/frint-router-react.svg" alt="npm"></a></p>
+<blockquote>
+<p>Router package for Frint</p>
+</blockquote>
+<!-- MarkdownTOC autolink=true bracket=round -->
+<ul>
+<li><a href="#guide">Guide</a><ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#nested-routes">Nested routes</a></li>
+<li><a href="#note">Note</a></li>
+</ul>
+</li>
+<li><a href="#api">API</a><ul>
+<li><a href="#route">Route</a></li>
+<li><a href="#link">Link</a></li>
+<li><a href="#switch">Switch</a></li>
+</ul>
+</li>
+</ul>
+<!-- /MarkdownTOC -->
+<hr>
+<h1 id="guide">Guide</h1>
+<h2 id="installation">Installation</h2>
+<p>With <a href="https://www.npmjs.com/">npm</a>:</p>
+<pre><code>$ npm install --save frint-router frint-router-react
+</code></pre><p>Via <a href="https://unpkg.com">unpkg</a> CDN:</p>
+<pre><code class="lang-html">&lt;script src=&quot;https://unpkg.com/frint-router-react@latest/dist/frint-router-react.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;script&gt;
+  // available as `window.FrintRouterReact`
+&lt;/script&gt;
+</code></pre>
+<h2 id="usage">Usage</h2>
+<p>This package exports a handful of components.</p>
+<h3 id="-route-component"><code>Route</code> component</h3>
+<p>The <code>Route</code> component is how you define a route in your application, that can render either a Component or an App.</p>
+<h4 id="components">Components</h4>
+<p>Assume you have two components <code>HomePage</code> and <code>AboutPage</code>, and you want to show them when the browser navigates to <code>/</code> and <code>/about</code> respectively:</p>
+<pre><code class="lang-js">// components/Root.js
+import { Route } from &#39;frint-router-react&#39;;
+
+import HomePage from &#39;./HomePage&#39;;
+import AboutPage from &#39;./AboutPage&#39;;
+
+export default function Root() {
+  return (
+    &lt;div&gt;
+      &lt;Route path=&quot;/&quot; component={HomePage} exact /&gt;
+      &lt;Route path=&quot;/about&quot; component={AboutPage} /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<p>The <code>exact</code> prop means, the route will be matched to the exact string <code>/</code>. Any further suffix in the URL would result in a no match.</p>
+<h4 id="apps">Apps</h4>
+<p>Similar to Components, Apps can also be mounted for specific routes:</p>
+<pre><code class="lang-js">// components/Root.js
+import React from &#39;react&#39;;
+import { Route } from &#39;frint-router-react&#39;;
+
+import HomePage from &#39;./HomePage&#39;;
+import ContactPageApp from &#39;../contactPageApp&#39;;
+
+export default function Root() {
+  return (
+    &lt;div&gt;
+      &lt;Route path=&quot;/about&quot; app={ContactPage} /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="-switch-component"><code>Switch</code> component</h3>
+<p>The <code>Switch</code> component makes sure only one direct child <code>Route</code> is shown. The first one to match always wins, and the last <code>Route</code> with no <code>path</code> is rendered as a default case.</p>
+<p>Take a look at this scenario, for e.g.:</p>
+<pre><code class="lang-js">// components/MyComponent.js
+import React from &#39;react&#39;;
+import { Switch, Route } from &#39;frint-router-react&#39;;
+
+import Foo from &#39;./Foo&#39;;
+import Bar from &#39;./Bar&#39;;
+import Baz from &#39;./Baz&#39;;
+
+function NoMatch() {
+  return (
+    &lt;p&gt;Nothing to show.&lt;/p&gt;
+  );
+}
+
+export default MyComponent() {
+  return (
+    &lt;div&gt;
+      &lt;Switch&gt;
+        &lt;Route path=&quot;/foo&quot; component={Foo} /&gt;
+        &lt;Route path=&quot;/bar&quot; component={Bar} /&gt;
+        &lt;Route path=&quot;/baz&quot; component={Baz} /&gt;
+        &lt;Route component={NoMatch} /&gt;
+      &lt;/Switch&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<p>If the URL happens to be <code>/foo</code>, then <code>Foo</code> component will render. Same follows for <code>Bar</code> and <code>Baz</code> if URLs are <code>/bar</code> and <code>/baz</code> respectively.</p>
+<p>And only one of them can render at the same time. If there is no match, the last <code>Route</code> with no <code>path</code> defined will be rendered. Much like handling the <code>default</code> use case in a plain <code>switch</code> statement in JavaScript.</p>
+<h3 id="-link-component"><code>Link</code> component</h3>
+<p>The <code>Link</code> component is used for creating links, that can navigate to other pages. It will take care of adapting to the router service that you are using from <code>frint-router</code> automatically.</p>
+<pre><code class="lang-js">// components/TopNav.js
+import React from &#39;react&#39;;
+import { Link } from &#39;frint-router-react&#39;;
+
+export default function TopNav() {
+  return (
+    &lt;ul&gt;
+      &lt;li&gt;&lt;Link to=&quot;/&quot;&gt;Home&lt;/Link&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;Link to=&quot;/about&quot;&gt;About&lt;/Link&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  );
+}
+</code></pre>
+<p>You can also pass additional props to render the links with CSS class names when they are active for example:</p>
+<pre><code class="lang-js">export default function TopNav() {
+  return (
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;Link
+          to=&quot;/&quot;
+          className=&quot;nav-link&quot;
+          activeClassName=&quot;is-active&quot;
+          exact
+        &gt;
+          Home
+        &lt;/Link&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;Link
+          to=&quot;/about&quot;
+          className=&quot;nav-link&quot;
+          activeClassName=&quot;is-active&quot;
+        &gt;
+          About
+        &lt;/Link&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  );
+}
+</code></pre>
+<h2 id="nested-routes">Nested routes</h2>
+<p>When <code>Route</code> renders a particular Component, the component is given a <code>match</code> prop which contains information about the currently matched path.</p>
+<p>If you had a route for <code>/about</code> like this:</p>
+<pre><code class="lang-js">// components/Root.js
+import React from &#39;react&#39;;
+import { Route } from &#39;frint-router-react&#39;;
+
+import HomePage from &#39;./HomePage&#39;;
+import AboutPage from &#39;./AboutPage&#39;;
+
+export default function Root() {
+  return (
+    &lt;div&gt;
+      &lt;Route path=&quot;/&quot; component={HomePage} exact /&gt;
+      &lt;Route path=&quot;/about&quot; component={AboutPage} /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<p>And when you navigate to <code>/about</code> in the browser, the <code>AboutPage</code> component will have access to a <code>match</code> prop:</p>
+<pre><code class="lang-js">// components/AboutPage.js
+import React from &#39;react&#39;;
+
+export default function AboutPage(props) {
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;About Page&lt;/h2&gt;
+
+      &lt;p&gt;The current matched URL is {props.match.url}&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<p>The page will render with the text <code>The current matched URL is /about</code>.</p>
+<p>Now that you know in which path the component rendered itself in, you can have further child routes in the Component:</p>
+<pre><code class="lang-js">// components/AboutPage.js
+import React from &#39;react&#39;;
+import { Route, Switch } from &#39;frint-router-react&#39;;
+
+function NoMatch() {
+  return (
+    &lt;p&gt;No user has been selected.&lt;/p&gt;
+  );
+}
+
+function ShowUser(props) {
+  const { match } = props;
+
+  return (
+    &lt;p&gt;Current selected user is {match.params.user}&lt;/p&gt;
+  );
+}
+
+export default function AboutPage(props) {
+  const { match } = props;
+
+  return (
+    &lt;div&gt;
+      &lt;h2&gt;About Page&lt;/h2&gt;
+
+      &lt;ul&gt;
+        &lt;li&gt;&lt;Link to={`${match.url}/harry`}&gt;Harry&lt;/Link&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;Link to={`${match.url}/hermione`}&gt;Hermione&lt;/Link&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;Link to={`${match.url}/ron`}&gt;Ron&lt;/Link&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+
+      &lt;Switch&gt;
+        &lt;Route path={`${match.url}/:user`} component={ShowUser} /&gt;
+        &lt;Route component={NoMatch} /&gt;
+      &lt;/Switch&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<h3 id="-match-prop"><code>match</code> prop</h3>
+<p>The <code>props.match</code> object in Components follow a structure like this:</p>
+<pre><code class="lang-js">// in AboutPage component
+{
+  url: &#39;/about&#39;,
+  isExact: true,
+  params: {}
+}
+
+// in ShowUser component
+{
+  url: &#39;/about/hermione&#39;,
+  isExact: true,
+  params: {
+    user: &#39;hermione&#39;,
+  }
+}
+</code></pre>
+<p>Since <code>props.match</code> always contains the currenly matched URL info for the rendered Component, it is possible for you to create more child Routes dynamically.</p>
+<h2 id="note">Note</h2>
+<p>This package is a close implementation of the APIs introduced by the awesome <a href="https://github.com/ReactTraining/react-router"><code>react-router</code></a>, but done in a way to fit well with rest of the FrintJS packages.</p>
+<hr>
+<h1 id="api">API</h1>
+<h2 id="route">Route</h2>
+<blockquote>
+<p>Route</p>
+</blockquote>
+<h3 id="props">Props</h3>
+<ol>
+<li><code>path</code> (<code>String</code>): The pattern to match against<ul>
+<li>Example (plain): <code>/about</code></li>
+<li>Example (with params): <code>/about/:user</code></li>
+</ul>
+</li>
+<li><code>exact</code> (<code>Boolean</code>): Match the <code>path</code> exactly (with no suffix in the path)</li>
+<li><code>component</code> (<code>Component</code>): The React component to render
+1, <code>render</code> (<code>Function</code>): For rendering inline via wrapped stateless components</li>
+<li><code>app</code> (<code>App</code>): Frint App that you want to render</li>
+</ol>
+<h2 id="link">Link</h2>
+<blockquote>
+<p>Link</p>
+</blockquote>
+<h3 id="props">Props</h3>
+<ol>
+<li><code>to</code> (<code>String</code>): Path to navigate to</li>
+<li><code>type</code> (<code>String</code>): If you want the Link to render as a <code>&lt;button&gt;</code> with its type, otherwise defaults to plain anchors (<code>&lt;a&gt;</code>)</li>
+<li><code>className</code> (<code>String</code>): CSS class name</li>
+<li><code>activeClassName</code> (<code>String</code>): CSS class name to render with, if current URL matches the Link&#39;s</li>
+<li><code>exact</code> (<code>Boolean</code>): Trigger <code>activeClassName</code> by matching the path exactly</li>
+<li><code>children</code> (<code>Node</code>): The body of the Link</li>
+</ol>
+<h2 id="switch">Switch</h2>
+<blockquote>
+<p>Switch</p>
+</blockquote>
+<h3 id="props">Props</h3>
+<ol>
+<li><code>children</code> (<code>Node</code>): Children of <code>&lt;Route&gt;</code>s</li>
+</ol>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        <strong>FrintJS</strong> by <a href="https://travix.com">Travix International B.V.</a>.
+        The source code is licensed under
+        <a href="https://github.com/Travix-International/frint/blob/master/LICENSE">MIT</a>.
+      </p>
+      <p>
+        <a class="icon" href="https://github.com/Travix-International/frint">
+          <i class="fa fa-github"></i>
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    <style>
+  .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-solarizedlight.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
+<script src="/js/site.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+<script type="text/javascript">
+docsearch({
+  apiKey: '897a7279c47670a5c4b474ee84350387',
+  indexName: 'frint.js',
+  inputSelector: '#doc-search-text-box',
+  debug: false // Set debug to true if you want to inspect the dropdown
+});
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-93673400-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>frint-component-utils | Frint</title>
+  </head>
+
+  <body>
+    <nav class="nav">
+      <div class="container">
+        <div class="nav-left">
+  <a href="/" class="nav-item brand">
+    <img alt="Frint" class="dark" src="/img/frint-logo-7a7a7a.png" />
+    <img alt="Frint" class="light" src="/img/frint-logo-fff.png" />
+  </a>
+
+  <a href="/docs" class="nav-item is-tab">
+    Documentation
+  </a>
+
+  <a href="/guides" class="nav-item is-tab">
+    Guides
+  </a>
+
+  <a href="/repl" class="nav-item is-tab">
+    REPL
+  </a>
+
+  <a href="/about" class="nav-item is-tab">
+    About
+  </a>
+</div>
+
+<div class="nav-right">
+  <div class="field nav-item">
+    <p class="control has-icon">
+      <input id="doc-search-text-box" class="input" type="text" placeholder="Search...">
+      <span class="icon is-small">
+        <i class="fa fa-search"></i>
+      </span>
+    </p>
+  </div>
+</div>
+
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-one-quarter">
+            <div class="menu-container docs">
+  <aside class="menu docs">
+    <p class="menu-label">
+      Quickstart
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/hello-world">Hello World</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Packages
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/packages/frint">frint</a></li>
+      <li><a href="/docs/packages/frint-store">frint-store</a></li>
+      <li><a href="/docs/packages/frint-data">frint-data</a></li>
+      <li><a href="/docs/packages/frint-react">frint-react</a></li>
+      <li><a href="/docs/packages/frint-react-server">frint-react-server</a></li>
+      <li><a href="/docs/packages/frint-router">frint-router</a></li>
+      <li><a href="/docs/packages/frint-router-react">frint-router-react</a></li>
+      <li><a href="/docs/packages/frint-cli">frint-cli</a></li>
+      <li><a href="/docs/packages/frint-config">frint-config</a></li>
+      <li><a href="/docs/packages/frint-component-utils">frint-component-utils</a></li>
+      <li><a href="/docs/packages/frint-component-handlers">frint-component-handlers</a></li>
+      <li><a href="/docs/packages/frint-test-utils">frint-test-utils</a></li>
+      <li><a href="/docs/packages/frint-compat">frint-compat</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Migration
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/migration/v1">Migrating to v1.x</a></li>
+      <li><a href="/docs/migration/v2">Migrating to v2.x</a></li>
+      <li><a href="/docs/migration/v3">Migrating to v3.x</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Contributing
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/contributing/maintainers">Maintainers guide</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Project
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/changelog">Changelog</a></li>
+    </ul>
+  </aside>
+</div>
+
+          </div>
+
+          <div class="column content">
+            <h1 id="frint-component-utils">frint-component-utils</h1>
+<p><a href="https://www.npmjs.com/package/frint-component-utils"><img src="https://img.shields.io/npm/v/frint-component-utils.svg" alt="npm"></a></p>
+<blockquote>
+<p>Component utils package of Frint</p>
+</blockquote>
+<!-- MarkdownTOC autolink=true bracket=round -->
+<ul>
+<li><a href="#guide">Guide</a><ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#handlers">Handlers</a></li>
+</ul>
+</li>
+<li><a href="#api">API</a><ul>
+<li><a href="#defaulthandler">DefaultHandler</a></li>
+<li><a href="#composehandlers">composeHandlers</a></li>
+<li><a href="#streamprops">streamProps</a></li>
+</ul>
+</li>
+</ul>
+<!-- /MarkdownTOC -->
+<hr>
+<h1 id="guide">Guide</h1>
+<p>This package is aimed at enabling other reactive rendering/templating libraries integrate with FrintJS, and not to be used directly by developers in their applications.</p>
+<p>For example, take a look at <code>frint-react</code> for its implementation using this package internally.</p>
+<h2 id="installation">Installation</h2>
+<p>With <a href="https://www.npmjs.com/">npm</a>:</p>
+<pre><code>$ npm install --save frint-component-utils
+</code></pre><h2 id="handlers">Handlers</h2>
+<p>Handlers concept follows a spec for the lifecycle of a reactive component, without tying itself to any specific library (like React or Vue). They are basically just objects with functions, which will be exposed as methods when composed together into a single instance.</p>
+<p>This enables other libraries to integrate with FrintJS as easily as possible. The monorepo here will always provide the handlers logic for maintaining the same behaviour, while others can start implementing these handlers with their preferred rendering library (Vue or Preact for example).</p>
+<p>Within the monorepo, we will be consuming these handlers ourselves too to create React-specific packages.</p>
+<h3 id="handler-spec">Handler spec</h3>
+<p>This is the default handler interface which other handlers are expected to implement as needed:</p>
+<pre><code class="lang-js">{
+  // options
+  app: null,
+  component: null,
+
+  // lifecycle: creation
+  initialize() {},
+  beforeDestroy() {},
+
+  // data
+  getInitialData() {},
+  setData(key, value) {},
+  setDataWithCallback(key, value, cb) {},
+  getData(key) {},
+
+  // props
+  getProp(key) {},
+  getProps() {},
+
+  // lifecycle: mounting
+  beforeMount() {},
+  afterMount() {},
+
+  // lifecycle: re-rendering
+  beforeUpdate() {},
+  shouldUpdate(nextProps, nextData) {},
+  afterUpdate() {},
+
+  // other
+  getMountableComponent(app) {}
+}
+</code></pre>
+<h3 id="handler-implementation">Handler implementation</h3>
+<p>For example, <a href="../frint-react"><code>frint-react</code></a> has an implementation of the handler targeting React. And it was done as follows:</p>
+<pre><code class="lang-js">{
+  setData(key, value) {
+    this.component.setState({
+      [key]: value,
+    });
+  },
+  setDataWithCallback(key, value, cb) {
+    this.component.setState({
+      [key]: value,
+    }, cb);
+  },
+  getData(key) {
+    return this.component.state[key];
+  },
+  getProps() {
+    return this.component.props;
+  },
+  getProp(key) {
+    return this.component.props[key];
+  }
+}
+</code></pre>
+<p>You can also see how multiple handlers are composed together and implemented in <code>Region</code> and <code>observe</code> Components in <a href="../frint-component-handlers"><code>frint-component-handlers</code></a> and <a href="../frint-react"><code>frint-react</code></a> packages.</p>
+<h1 id="api">API</h1>
+<h2 id="defaulthandler">DefaultHandler</h2>
+<blockquote>
+<p>DefaultHandler</p>
+</blockquote>
+<p>The interface of a default handler object, that other handlers are expected to override.</p>
+<h2 id="composehandlers">composeHandlers</h2>
+<blockquote>
+<p>composeHandlers(...handlers)</p>
+</blockquote>
+<h3 id="arguments">Arguments</h3>
+<ol>
+<li><code>handler</code> (<code>Object</code>): with functions to override from default/previous handlers.</li>
+</ol>
+<h3 id="returns">Returns</h3>
+<p><code>Handler</code>: Instance of handler after composing with all handlers.</p>
+<h2 id="streamprops">streamProps</h2>
+<blockquote>
+<p>streamProps(defaultProps = {})</p>
+</blockquote>
+<p>Helper function, for composing your props inside <code>observe</code>, and then generating and returning an single <code>Observable</code>.</p>
+<h3 id="arguments">Arguments</h3>
+<ol>
+<li><code>defaultProps</code> (<code>Object</code> [optional]): Default props to start with.</li>
+</ol>
+<h3 id="returns">Returns</h3>
+<p><code>Streamer</code> instance that implements these methods below:</p>
+<p>All <code>set*</code> methods return the same <code>Streamer</code> instance so multiple set calls can be chained in one go.</p>
+<h4 id="set">set</h4>
+<blockquote>
+<p>set(key, value)</p>
+<p>set(plainObject)</p>
+<p>set(observable$, ...mapperFunctions)</p>
+</blockquote>
+<h4 id="setkey">setKey</h4>
+<blockquote>
+<p>setKey(&#39;key&#39;, &#39;value&#39;)</p>
+</blockquote>
+<h4 id="setplainobject">setPlainObject</h4>
+<blockquote>
+<p>setPlainObject({ key: &#39;value&#39; })</p>
+</blockquote>
+<h4 id="setobservable">setObservable</h4>
+<blockquote>
+<p>setObservable(observable$, ...mapperFunctions)</p>
+</blockquote>
+<p>You can set as many mapper functions until you reach a value of your needs.</p>
+<pre><code class="lang-js">setObservable(
+  observable$,
+  props =&gt; props, // no modification
+  propsAgain =&gt; modifiedProps // with modification
+)
+</code></pre>
+<h4 id="setdispatch">setDispatch</h4>
+<blockquote>
+<p>setDispatch(actionCreators, store)</p>
+</blockquote>
+<pre><code class="lang-js">setDispatch({
+  incrementCounter: incrementCounter,
+  decrementCounter: decrementCounter,
+}, store)
+</code></pre>
+<h4 id="get-">get$</h4>
+<blockquote>
+<p>get$()</p>
+</blockquote>
+<p>Returns an <code>Observable</code>.</p>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        <strong>FrintJS</strong> by <a href="https://travix.com">Travix International B.V.</a>.
+        The source code is licensed under
+        <a href="https://github.com/Travix-International/frint/blob/master/LICENSE">MIT</a>.
+      </p>
+      <p>
+        <a class="icon" href="https://github.com/Travix-International/frint">
+          <i class="fa fa-github"></i>
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    <style>
+  .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-solarizedlight.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
+<script src="/js/site.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+<script type="text/javascript">
+docsearch({
+  apiKey: '897a7279c47670a5c4b474ee84350387',
+  indexName: 'frint.js',
+  inputSelector: '#doc-search-text-box',
+  debug: false // Set debug to true if you want to inspect the dropdown
+});
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-93673400-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

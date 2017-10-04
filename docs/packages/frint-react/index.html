@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>frint-react | Frint</title>
+  </head>
+
+  <body>
+    <nav class="nav">
+      <div class="container">
+        <div class="nav-left">
+  <a href="/" class="nav-item brand">
+    <img alt="Frint" class="dark" src="/img/frint-logo-7a7a7a.png" />
+    <img alt="Frint" class="light" src="/img/frint-logo-fff.png" />
+  </a>
+
+  <a href="/docs" class="nav-item is-tab">
+    Documentation
+  </a>
+
+  <a href="/guides" class="nav-item is-tab">
+    Guides
+  </a>
+
+  <a href="/repl" class="nav-item is-tab">
+    REPL
+  </a>
+
+  <a href="/about" class="nav-item is-tab">
+    About
+  </a>
+</div>
+
+<div class="nav-right">
+  <div class="field nav-item">
+    <p class="control has-icon">
+      <input id="doc-search-text-box" class="input" type="text" placeholder="Search...">
+      <span class="icon is-small">
+        <i class="fa fa-search"></i>
+      </span>
+    </p>
+  </div>
+</div>
+
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-one-quarter">
+            <div class="menu-container docs">
+  <aside class="menu docs">
+    <p class="menu-label">
+      Quickstart
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/hello-world">Hello World</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Packages
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/packages/frint">frint</a></li>
+      <li><a href="/docs/packages/frint-store">frint-store</a></li>
+      <li><a href="/docs/packages/frint-data">frint-data</a></li>
+      <li><a href="/docs/packages/frint-react">frint-react</a></li>
+      <li><a href="/docs/packages/frint-react-server">frint-react-server</a></li>
+      <li><a href="/docs/packages/frint-router">frint-router</a></li>
+      <li><a href="/docs/packages/frint-router-react">frint-router-react</a></li>
+      <li><a href="/docs/packages/frint-cli">frint-cli</a></li>
+      <li><a href="/docs/packages/frint-config">frint-config</a></li>
+      <li><a href="/docs/packages/frint-component-utils">frint-component-utils</a></li>
+      <li><a href="/docs/packages/frint-component-handlers">frint-component-handlers</a></li>
+      <li><a href="/docs/packages/frint-test-utils">frint-test-utils</a></li>
+      <li><a href="/docs/packages/frint-compat">frint-compat</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Migration
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/migration/v1">Migrating to v1.x</a></li>
+      <li><a href="/docs/migration/v2">Migrating to v2.x</a></li>
+      <li><a href="/docs/migration/v3">Migrating to v3.x</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Contributing
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/contributing/maintainers">Maintainers guide</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Project
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/changelog">Changelog</a></li>
+    </ul>
+  </aside>
+</div>
+
+          </div>
+
+          <div class="column content">
+            <h1 id="frint-react">frint-react</h1>
+<p><a href="https://www.npmjs.com/package/frint-react"><img src="https://img.shields.io/npm/v/frint-react.svg" alt="npm"></a></p>
+<blockquote>
+<p>React package for Frint</p>
+</blockquote>
+<!-- MarkdownTOC autolink=true bracket=round -->
+<ul>
+<li><a href="#guide">Guide</a><ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#terminologies">Terminologies</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#regions">Regions</a></li>
+<li><a href="#region-and-data">Region and data</a></li>
+<li><a href="#observing-components">Observing components</a></li>
+<li><a href="#multi-instance-apps">Multi-instance Apps</a></li>
+</ul>
+</li>
+<li><a href="#api">API</a><ul>
+<li><a href="#render">render</a></li>
+<li><a href="#observe">observe</a></li>
+<li><a href="#region">Region</a></li>
+<li><a href="#regionservice">RegionService</a></li>
+<li><a href="#streamprops">streamProps</a></li>
+<li><a href="#reacthandler">ReactHandler</a></li>
+</ul>
+</li>
+</ul>
+<!-- /MarkdownTOC -->
+<h1 id="guide">Guide</h1>
+<h2 id="installation">Installation</h2>
+<p>With <a href="https://www.npmjs.com/">npm</a>:</p>
+<pre><code>$ npm install --save react react-dom prop-types frint-react
+</code></pre><p>Via <a href="https://unpkg.com">unpkg</a> CDN:</p>
+<pre><code class="lang-html">&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.4.0/Rx.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/react/15.5.4/react-dom.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/prop-types@15.5.10/prop-types.js&quot;&gt;&lt;/script&gt;
+
+&lt;script src=&quot;https://unpkg.com/frint@latest/dist/frint.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/frint-react@latest/dist/frint-react.min.js&quot;&gt;&lt;/script&gt;
+
+&lt;script&gt;
+  // available as `window.FrintReact`
+&lt;/script&gt;
+</code></pre>
+<h2 id="terminologies">Terminologies</h2>
+<p><strong>React</strong>:</p>
+<ul>
+<li><code>JSX</code>: <a href="https://facebook.github.io/react/docs/jsx-in-depth.html">Syntatic sugar</a> for writing JS in XML-like syntax.<ul>
+<li><code>HyperScript</code>: The function used in transpiled JSX code.</li>
+</ul>
+</li>
+<li><code>Component</code>: <a href="https://facebook.github.io/react/docs/react-component.html">React Components</a>.</li>
+<li><code>Container</code>: <a href="https://facebook.github.io/react/docs/higher-order-components.html">Higher-Order Component</a>, to pass down props to dumb components.</li>
+</ul>
+<p><strong>Reactive programming</strong>:</p>
+<ul>
+<li><code>Observable</code>: As detailed in the <a href="https://github.com/tc39/proposal-observable">spec</a>, and implemented in <a href="http://reactivex.io/rxjs/class/es6/Observable.js~Observable.html">RxJS</a>.</li>
+</ul>
+<p><strong>Frint</strong>:</p>
+<ul>
+<li><code>Region</code>: Component that can be embedded anywhere</li>
+</ul>
+<h2 id="usage">Usage</h2>
+<p>We start by importing the necessary functions from the library:</p>
+<pre><code class="lang-js">import React from &#39;react&#39;;
+import { createApp } from &#39;frint&#39;;
+import { render } from &#39;frint-react&#39;;
+</code></pre>
+<p>Now let&#39;s create our first Component:</p>
+<pre><code class="lang-js">function Root() {
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Hello World&lt;/p&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<p>Now we need to create our Root App, and assign the previously defined Component as our root component for the App:</p>
+<pre><code class="lang-js">const RootApp = createApp({
+  name: &#39;MyRootApp&#39;,
+  providers: [
+    {
+      name: &#39;component&#39;,
+      useValue: Root
+    }
+  ]
+});
+</code></pre>
+<p>Now that we have everything ready, we can instantiate our app, and render it:</p>
+<pre><code class="lang-js">window.app = new RootApp();
+render(window.app, document.getElementById(&#39;root&#39;));
+</code></pre>
+<p>The code above asumes your page has an element with an id <code>root</code>:</p>
+<pre><code class="lang-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2 id="regions">Regions</h2>
+<p>The library already ships with a <code>Region</code> component, and a <code>RegionService</code>.</p>
+<p>We use the concept of regions for defining areas in our Components, where other Apps can load themselves in.</p>
+<p>For example, imagine the Root component of our Root App above, we can define a Region named <code>sidebar</code> as follows:</p>
+<pre><code class="lang-js">import React from &#39;react&#39;;
+import { Region } from &#39;frint-react&#39;;
+
+function Root() {
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Hello World from Root App!&lt;/p&gt;
+
+      &lt;Region name=&quot;sidebar&quot; /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<p>That&#39;s just defining the Region only. Let&#39;s now create an App, and assign it to the <code>sidebar</code> region:</p>
+<pre><code class="lang-js">import { createApp } from &#39;frint&#39;;
+
+function AppComponent() {
+  return (
+    &lt;p&gt;I am App&lt;/p&gt;
+  );
+}
+
+const App = createApp({
+  name: &#39;MyApp&#39;,
+  providers: [
+    {
+      name: &#39;component&#39;,
+      useValue: AppComponent,
+    }
+  ],
+});
+</code></pre>
+<p>Now that we have our App defined, we can register it to our Root App:</p>
+<pre><code class="lang-js">window.app.registerApp(App, {
+  regions: [&#39;sidebar&#39;], // name of regions to target
+  weight: 10, // the lower the number, the higher they would appear
+});
+</code></pre>
+<p>Now when you refresh your browser, you would notice your App being rendered inside the Region <code>sidebar</code>.</p>
+<h2 id="region-and-data">Region and data</h2>
+<p>It is possible that when defining the Region with a name, you would also want to pass some data to it, so that whenever an App gets rendered inside it, the App would be able to access that data.</p>
+<p>From the above example of <code>sidebar</code> Region, imagine us passing some data too via props:</p>
+<pre><code class="lang-js">function Root() {
+  const data = {
+    foo: &#39;bar&#39;
+  };
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Hello World from Root App!&lt;/p&gt;
+
+      &lt;Region name=&quot;sidebar&quot; data={data} /&gt;
+    &lt;/div&gt;
+  );
+}
+</code></pre>
+<p>That&#39;s only the <code>Region</code> component&#39;s implementation part. How do we access it from our App now?</p>
+<p>Enter <code>RegionService</code>. This is a Service that we can pass in our App&#39;s providers list, allowing us to later have access to Region&#39;s props.</p>
+<pre><code class="lang-js">import { RegionService } from &#39;frint-react&#39;;
+
+const App = createApp({
+  name: &#39;MyApp&#39;,
+  providers: [
+    {
+      name: &#39;component&#39;,
+      useValue: AppComponent,
+    },
+    {
+      name: &#39;region&#39;,
+      useClass: RegionService, // `useClass` because `RegionService` will be instantiated
+    },
+  ],
+});
+</code></pre>
+<p>Once your App is registered and rendered, you can get access to your App instance, which can then allow you to deal with Region&#39;s props:</p>
+<pre><code class="lang-js">const myApp = window.app.getAppInstance(&#39;MyApp&#39;);
+const region = myApp.get(&#39;region&#39;);
+
+// Region&#39;s data as an Observable
+const regionData$ = region.getData$();
+
+regionData$.subscribe((data) =&gt; {
+  console.log(data); // { foo: &#39;bar&#39; }
+});
+</code></pre>
+<p>We will discuss more in details how to get Region&#39;s props in your App&#39;s components via <code>observe</code> in the next section.</p>
+<h2 id="observing-components">Observing components</h2>
+<p>We encourage everyone to write their components in as dumb way as possible. Meaning, we just pass the props, and Components just render them. Nothing more.</p>
+<p>But real-world applications are complex, and data can come from anywhere, at any time, asynchronously.</p>
+<p>Enter <code>observe</code>. This is a function that we ship with the library for making your Components reactive.</p>
+<p>A very simple example would be:</p>
+<pre><code class="lang-js">function MyComponent(props) {
+  return (
+    &lt;p&gt;Interval: {props.interval}&lt;/p&gt;
+  );
+}
+</code></pre>
+<p>We just created a component, that prints out a prop called <code>interval</code>. Nothing fancy there. But we wish the interval to update itself every second. Instead of handling it from within the Component, we can do it with <code>observe</code> as follows:</p>
+<pre><code class="lang-js">import { Observable } from &#39;rxjs&#39;;
+import { observe } from &#39;frint-react&#39;;
+
+const MyObservedComponent = observe(function () {
+  return Observable
+    .interval(1000) // emits an integer every 1 second
+    .map(x =&gt; ({ interval: x })); // map the integer to a props-compatible object
+})(MyComponent);
+</code></pre>
+<p>We have just made our simple Component reactive, by wrapping it with <code>observe</code>. Now it will continue to update the <code>interval</code> prop every second until the Component has unmounted itself.</p>
+<h3 id="observing-region-s-data">Observing Region&#39;s data</h3>
+<p>In previous example, we showed you how to access Region&#39;s data via <code>RegionService</code>. Now let&#39;s see how we can pass it to your App&#39;s component too:</p>
+<pre><code class="lang-js">const ObservedAppComponent = observe(function (app, props$) {
+  // `app` is your App instance
+  // `props$` is an Observable of props being passed by parent Component (if any)
+
+  // let&#39;s keep our first interval Observable too
+  const interval$ = Observable
+    .interval(1000)
+    .map(x =&gt; ({ interval: x }));
+
+  const region = app.get(&#39;region&#39;); // the RegionService instance
+  const regionData$ = region.getData$()
+    .map(regionData =&gt; ({ regionData: regionData }));
+
+  // now we have two observables, `interval$` and `regionData$`.
+  // we need to merge them both into a single props-compatible object:
+  return interval$
+    .merge(regionData$)
+    .scan((props, emitted) =&gt; {
+      return {
+        ...props,
+        ...emitted,
+      };
+    }, {});
+})(AppComponent);
+</code></pre>
+<p>When your App&#39;s component renders, latest props will be passed to it in this structure:</p>
+<pre><code class="lang-js">{
+  // will keep updating every second,
+  interval: 1,
+
+  // will update whenever sidebar Region&#39;s props change
+  regionData: {
+    foo: &#39;bar&#39;
+  }
+}
+</code></pre>
+<h3 id="helper-function-for-streaming-props">Helper function for streaming props</h3>
+<p>As the number of observables grow, it might be difficult to maintain your <code>observe</code> implementation. That&#39;s why we are also shipping a <code>streamProps</code> function in the library to make it easier for you:</p>
+<pre><code class="lang-js">import { streamProps } from &#39;frint-react&#39;;
+
+const MyObservedComponent = observe(function (app) {
+  return streamProps({}) // start streaming with a default plain object
+    // interval
+    .set(
+      Observable.interval(1000),
+      x =&gt; ({ interval: x }),
+    )
+
+    // region data
+    .set(
+      app.get(&#39;region&#39;).getData$(),
+      regionData =&gt; ({ regionData })
+    )
+
+    // plain object
+    .set({
+      key: &#39;value&#39;
+    })
+
+    // key/value pairs
+    .set(&#39;myKey&#39;, &#39;myValue&#39;)
+
+    // return everything as a single merged Observable
+    .get$();
+})(AppComponent);
+</code></pre>
+<p>The props available inside your Component would then be in this format:</p>
+<pre><code class="lang-js">{
+  interval: 1,
+  regionData: { foo: &#39;bar&#39; },
+  key: &#39;value&#39;,
+  myKey: &#39;myValue&#39;
+}
+</code></pre>
+<h2 id="multi-instance-apps">Multi-instance Apps</h2>
+<p>This is a use case where you have multiple instances of Region with the same name mounted in the DOM. And the apps rendered in them should have their own independent scoped instances too.</p>
+<p>Think of a scenario where you have a TodoList, and you want a Region defined for each Todo item:</p>
+<pre><code class="lang-js">function MyComponent() {
+  const todos = [
+    { id: &#39;1&#39;, title: &#39;First todo&#39; },
+    { id: &#39;2&#39;, title: &#39;Second todo&#39; },
+    { id: &#39;3&#39;, title: &#39;Third todo&#39; },
+  ];
+
+  return (
+    &lt;ul&gt;
+      {todos.map((todo) =&gt; {
+        return (
+          &lt;li&gt;
+            &lt;h3&gt;{todo.title}&lt;/h3&gt;
+
+            &lt;Region
+              name=&quot;todo-item&quot;
+              data={{ todo }}
+              uniqueKey={`todo-item-${todo.id}`}
+            /&gt;
+          &lt;/li&gt;
+        );
+      })}
+    &lt;/ul&gt;
+  );
+}
+</code></pre>
+<p>Now we may have an App that we want to be rendered in <code>todo-item</code> Regions.</p>
+<p>Let&#39;s create an App, that will receive the <code>todo</code> object, and render the title in UPPERCASE format.</p>
+<pre><code class="lang-js">import React from &#39;react&#39;;
+import { createApp } from &#39;frint&#39;;
+import { observe, RegionService } from &#39;frint-react&#39;;
+
+function AppComponent(props) {
+  const { todo } = props;
+
+  return (
+    &lt;p&gt;Todo in upper case: {todo.title.toUpperCase()}&lt;/p&gt;
+  );
+}
+
+const ObservedAppComponent = observe(function (app) {
+  return streamProps()
+    .set(
+      app.get(&#39;region&#39;).getData$(),
+      data =&gt; ({ todo: data.todo })
+    )
+    .get$();
+})(AppComponent);
+
+const App = createApp({
+  name: &#39;MyApp&#39;,
+  providers: [
+    {
+      name: &#39;component&#39;,
+      useValue: ObservedAppComponent
+    },
+    {
+      name: &#39;region&#39;,
+      useClass: RegionService
+    }
+  ]
+});
+</code></pre>
+<p>Now comes the part of registering our App as a multi-instance app:</p>
+<pre><code class="lang-js">window.app.registerApp(App, {
+  regions: [&#39;todo-item&#39;],
+
+  // this tells Root App to treat this app as a multi-instance one
+  multi: true,
+});
+</code></pre>
+<hr>
+<h1 id="api">API</h1>
+<h2 id="render">render</h2>
+<blockquote>
+<p>render(app, node)</p>
+</blockquote>
+<p>Renders a Root App in target DOM node.</p>
+<h3 id="arguments">Arguments</h3>
+<ol>
+<li><code>app</code> (<code>App</code>): The Root App instance.</li>
+<li><code>node</code> (<code>Element</code>): The DOM Element where you want your App to render.</li>
+</ol>
+<h2 id="observe">observe</h2>
+<blockquote>
+<p>observe(fn)(MyComponent)</p>
+</blockquote>
+<h3 id="arguments">Arguments</h3>
+<ol>
+<li><code>fn</code> (<code>Function</code>): The function returning an Observable.<ul>
+<li>The <code>fn</code> accepts two arguments:<ul>
+<li><code>app</code>: the instance of your Root App or the App in scope</li>
+<li><code>props$</code>: an Observable of props being passed by parent component (if any)</li>
+</ul>
+</li>
+<li>It should return an <code>Observable</code></li>
+</ul>
+</li>
+</ol>
+<h3 id="returns">Returns</h3>
+<p><code>Function</code>: that can be called with a Component to return an observed Component ready for embedding and rendering anywhere.</p>
+<h2 id="region">Region</h2>
+<blockquote>
+<p>Region</p>
+</blockquote>
+<p>The Region component.</p>
+<h3 id="props">Props</h3>
+<ol>
+<li><code>name</code> (<code>String</code>): The name of the Region</li>
+<li><code>data</code> (<code>Object</code>): Data to be made available to rendered App</li>
+<li><code>uniqueKey</code> (<code>String</code> [optional]): Used when there are multiple Regions of the same <code>name</code>. It prop must be unique and fixed throughout the whole app.</li>
+</ol>
+<h2 id="regionservice">RegionService</h2>
+<p>Exported from <a href="../frint-component-handlers#streamprops"><code>frint-component-handlers</code></a>.</p>
+<h2 id="streamprops">streamProps</h2>
+<p>Exported from <a href="../frint-component-utils#streamprops"><code>frint-component-utils</code></a>.</p>
+<h2 id="reacthandler">ReactHandler</h2>
+<blockquote>
+<p>ReactHandler</p>
+</blockquote>
+<p>Handler for React, according to the spec defined in <a href="../frint-component-utils"><code>frint-component-utils</code></a>.</p>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        <strong>FrintJS</strong> by <a href="https://travix.com">Travix International B.V.</a>.
+        The source code is licensed under
+        <a href="https://github.com/Travix-International/frint/blob/master/LICENSE">MIT</a>.
+      </p>
+      <p>
+        <a class="icon" href="https://github.com/Travix-International/frint">
+          <i class="fa fa-github"></i>
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    <style>
+  .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-solarizedlight.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
+<script src="/js/site.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+<script type="text/javascript">
+docsearch({
+  apiKey: '897a7279c47670a5c4b474ee84350387',
+  indexName: 'frint.js',
+  inputSelector: '#doc-search-text-box',
+  debug: false // Set debug to true if you want to inspect the dropdown
+});
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-93673400-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

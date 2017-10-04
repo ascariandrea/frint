@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hello World | Frint</title>
+  </head>
+
+  <body>
+    <nav class="nav">
+      <div class="container">
+        <div class="nav-left">
+  <a href="/" class="nav-item brand">
+    <img alt="Frint" class="dark" src="/img/frint-logo-7a7a7a.png" />
+    <img alt="Frint" class="light" src="/img/frint-logo-fff.png" />
+  </a>
+
+  <a href="/docs" class="nav-item is-tab">
+    Documentation
+  </a>
+
+  <a href="/guides" class="nav-item is-tab">
+    Guides
+  </a>
+
+  <a href="/repl" class="nav-item is-tab">
+    REPL
+  </a>
+
+  <a href="/about" class="nav-item is-tab">
+    About
+  </a>
+</div>
+
+<div class="nav-right">
+  <div class="field nav-item">
+    <p class="control has-icon">
+      <input id="doc-search-text-box" class="input" type="text" placeholder="Search...">
+      <span class="icon is-small">
+        <i class="fa fa-search"></i>
+      </span>
+    </p>
+  </div>
+</div>
+
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-one-quarter">
+            <div class="menu-container docs">
+  <aside class="menu docs">
+    <p class="menu-label">
+      Step by step guides
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/hello-world">Hello World</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Concepts
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/apps">Apps</a></li>
+      <li><a href="/guides/providers">Providers</a></li>
+      <li><a href="/guides/components">Components</a></li>
+      <li><a href="/guides/regions">Regions</a></li>
+      <li><a href="/guides/observables">Observables</a></li>
+      <li><a href="/guides/higher-order-components">Higher-Order Components</a></li>
+    </ul>
+
+    <p class="menu-label">
+      How TOs
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/state-management">State management</a></li>
+    </ul>
+
+    <ul class="menu-list">
+      <li><a href="/guides/routing">Routing</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Advanced
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/code-splitting">Code splitting</a></li>
+      <li><a href="/guides/async-loading">Async loading</a></li>
+    </ul>
+  </aside>
+</div>
+
+          </div>
+
+          <div class="column content">
+            <h1 id="hello-world">Hello World</h1>
+<!-- MarkdownTOC depth=1 autolink=true bracket=round -->
+<ul>
+<li><a href="#initialize-a-new-npm-package">Initialize a new npm package</a></li>
+<li><a href="#dependencies">Dependencies</a></li>
+<li><a href="#transpilers">Transpilers</a></li>
+<li><a href="#directory-structure">Directory structure</a></li>
+<li><a href="#app">App</a></li>
+<li><a href="#component">Component</a></li>
+<li><a href="#render">Render</a></li>
+<li><a href="#build">Build</a></li>
+</ul>
+<!-- /MarkdownTOC -->
+<p>Step by step guide for creating your first App.</p>
+<h2 id="initialize-a-new-npm-package">Initialize a new npm package</h2>
+<p>Before anything, you need to initialize a new npm package for your App:</p>
+<pre><code>$ npm init
+</code></pre><p>Fill in the details, like your App&#39;s name, in the CLI prompts.</p>
+<h2 id="dependencies">Dependencies</h2>
+<p>Install the minimum dependencies required to get your App up and running, :</p>
+<pre><code>$ npm install --save frint frint-react react react-dom prop-types
+</code></pre><p>And also the the build tools:</p>
+<pre><code>$ npm install --save-dev babel-core babel-preset-travix webpack babel-loader
+</code></pre><h2 id="transpilers">Transpilers</h2>
+<p>We use Babel for transpiling ES6/JSX code to browser compatible ES5. Since we already ship our own Babel preset, all you need to do is create a new <code>.babelrc</code> file in your root directory with this content:</p>
+<pre><code>{
+  &quot;presets&quot;: [
+    &quot;travix&quot;
+  ]
+}
+</code></pre><h2 id="directory-structure">Directory structure</h2>
+<p>We try to follow a convention for our file structure in Apps. A simple App&#39;s tree would look like this:</p>
+<pre><code>├── app/
+│   ├── index.js
+├── components/
+│   ├── Root.js
+├── .babelrc
+├── index.js
+├── webpack.config.js
+└── package.json
+</code></pre><h2 id="app">App</h2>
+<p>Creating a new App class is pretty straightforward. You would be required to create a new file at app/index.js with the following content:</p>
+<pre><code class="lang-js">// app/index.js
+import { createApp } from &#39;frint&#39;;
+
+import RootComponent from &#39;../components/Root&#39;; // we still need to write this file
+
+export default createApp({
+  name: &#39;MyAppName&#39;,
+
+  providers: [
+    {
+      name: &#39;component&#39;,
+      useValue: RootComponent
+    }
+  ]
+});
+</code></pre>
+<h2 id="component">Component</h2>
+<p>Previously, we saw that App requires a Component for rendering. We will write our entry-level Component in <code>components/Root.js</code>:</p>
+<pre><code class="lang-js">// components/Root.js
+import React from &#39;react&#39;;
+
+export default function Root() {
+  return (
+    &lt;p&gt;Hello World!&lt;/p&gt;
+  );
+}
+</code></pre>
+<p>Basically, you import the <code>createApp</code> function from our <code>frint</code> package, and define your App by giving it a name, and also the Component that it needs to render.</p>
+<h2 id="render">Render</h2>
+<p>Now that we have our <code>App</code> defined, we can import and instantiate it, and then render it to the DOM:</p>
+<pre><code class="lang-js">// index.js
+import { render } from &#39;frint-react&#39;;
+
+import App from &#39;./app&#39;;
+
+const app = new App();
+render(app, document.getElementById(&#39;root&#39;));
+</code></pre>
+<p>The code above assumes, you have an element in your webpage with ID <code>root</code>:</p>
+<pre><code class="lang-html">&lt;!-- ./build/index.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    &lt;div id=&quot;root&quot;&gt;&lt;/div&gt;
+    &lt;script src=&quot;./bundle.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<h2 id="build">Build</h2>
+<p>We use Webpack for bundling Apps, and to do that, we require a <code>webpack.config.js</code> file in root directory:</p>
+<pre><code class="lang-js">module.exports = {
+  entry: __dirname + &#39;/index.js&#39;,
+  output: {
+    path: __dirname + &#39;/build&#39;,
+    filename: &#39;bundle.js&#39;
+  },
+  module: {
+    rules: [
+      {
+        test: /\.(js)$/,
+        loader: &#39;babel-loader&#39;,
+        query: {
+          presets: [
+            &#39;travix&#39;
+          ]
+        }
+      }
+    ]
+  },
+};
+</code></pre>
+<p>The build can now be performed with this command:</p>
+<pre><code>$ ./node_modules/.bin/webpack --config ./webpack.config.js
+</code></pre><p>Doing so would generate a new bundle at <code>./build/bundle.js</code>.</p>
+<p>Open your <code>index.html</code> file in the browser, and you would see <code>Hello World</code>.</p>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        <strong>FrintJS</strong> by <a href="https://travix.com">Travix International B.V.</a>.
+        The source code is licensed under
+        <a href="https://github.com/Travix-International/frint/blob/master/LICENSE">MIT</a>.
+      </p>
+      <p>
+        <a class="icon" href="https://github.com/Travix-International/frint">
+          <i class="fa fa-github"></i>
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    <style>
+  .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-solarizedlight.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
+<script src="/js/site.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+<script type="text/javascript">
+docsearch({
+  apiKey: '897a7279c47670a5c4b474ee84350387',
+  indexName: 'frint.js',
+  inputSelector: '#doc-search-text-box',
+  debug: false // Set debug to true if you want to inspect the dropdown
+});
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-93673400-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

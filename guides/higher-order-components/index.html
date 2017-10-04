@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Higher-Order Components | Frint</title>
+  </head>
+
+  <body>
+    <nav class="nav">
+      <div class="container">
+        <div class="nav-left">
+  <a href="/" class="nav-item brand">
+    <img alt="Frint" class="dark" src="/img/frint-logo-7a7a7a.png" />
+    <img alt="Frint" class="light" src="/img/frint-logo-fff.png" />
+  </a>
+
+  <a href="/docs" class="nav-item is-tab">
+    Documentation
+  </a>
+
+  <a href="/guides" class="nav-item is-tab">
+    Guides
+  </a>
+
+  <a href="/repl" class="nav-item is-tab">
+    REPL
+  </a>
+
+  <a href="/about" class="nav-item is-tab">
+    About
+  </a>
+</div>
+
+<div class="nav-right">
+  <div class="field nav-item">
+    <p class="control has-icon">
+      <input id="doc-search-text-box" class="input" type="text" placeholder="Search...">
+      <span class="icon is-small">
+        <i class="fa fa-search"></i>
+      </span>
+    </p>
+  </div>
+</div>
+
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-one-quarter">
+            <div class="menu-container docs">
+  <aside class="menu docs">
+    <p class="menu-label">
+      Step by step guides
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/hello-world">Hello World</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Concepts
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/apps">Apps</a></li>
+      <li><a href="/guides/providers">Providers</a></li>
+      <li><a href="/guides/components">Components</a></li>
+      <li><a href="/guides/regions">Regions</a></li>
+      <li><a href="/guides/observables">Observables</a></li>
+      <li><a href="/guides/higher-order-components">Higher-Order Components</a></li>
+    </ul>
+
+    <p class="menu-label">
+      How TOs
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/state-management">State management</a></li>
+    </ul>
+
+    <ul class="menu-list">
+      <li><a href="/guides/routing">Routing</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Advanced
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/code-splitting">Code splitting</a></li>
+      <li><a href="/guides/async-loading">Async loading</a></li>
+    </ul>
+  </aside>
+</div>
+
+          </div>
+
+          <div class="column content">
+            <h1 id="higher-order-components-hocs-">Higher Order Components (HOCs)</h1>
+<!-- MarkdownTOC depth=2 autolink=true bracket=round -->
+<ul>
+<li><a href="#what-is-an-hoc">What is an HOC?</a></li>
+<li><a href="#how-does-it-work-with-frint">How does it work with Frint?</a><ul>
+<li><a href="#dependencies">Dependencies</a></li>
+<li><a href="#base-component">Base component</a></li>
+<li><a href="#app">App</a></li>
+<li><a href="#observed-component">Observed component</a></li>
+<li><a href="#render">Render</a></li>
+</ul>
+</li>
+</ul>
+<!-- /MarkdownTOC -->
+<h2 id="what-is-an-hoc-">What is an HOC?</h2>
+<p><a href="https://facebook.github.io/react/">React</a> has a very detailed documentation on this topic <a href="https://facebook.github.io/react/docs/higher-order-components.html">here</a>.</p>
+<p>In short:</p>
+<blockquote>
+<p>A higher-order component is a function that takes a component and returns a new component.</p>
+</blockquote>
+<h2 id="how-does-it-work-with-frint-">How does it work with Frint?</h2>
+<p>In our <code>frint-react</code> package, we expose an <code>observe</code> function which gives us an HOC.</p>
+<h3 id="dependencies">Dependencies</h3>
+<p>Install the dependencies first:</p>
+<pre><code>$ npm install --save rxjs react react-dom frint frint-react
+</code></pre><h3 id="base-component">Base component</h3>
+<p>Now let&#39;s say, we have a basic React component:</p>
+<pre><code class="lang-js">// components/Root.js
+import React from &#39;react&#39;;
+
+function MyComponent(props) {
+  return (
+    &lt;p&gt;Name: {props.name}&lt;/p&gt;
+  );
+}
+
+export default MyComponent;
+</code></pre>
+<p>The component just renders a name, which is given to it as props.</p>
+<h3 id="app">App</h3>
+<p>And the App definition happens to looks like this:</p>
+<pre><code class="lang-js">// app/index.js
+import { createApp } from &#39;frint&#39;;
+
+import Root from &#39;../components/Root&#39;;
+
+export default createApp({
+  name: &#39;MyAppNameHere&#39;,
+  providers: [
+    {
+      name: &#39;component&#39;,
+      useValue: Root
+    }
+  ]
+})
+</code></pre>
+<h3 id="observed-component">Observed component</h3>
+<p>But we want to inject the App&#39;s name to the component, and we could easily do that using <code>observe</code>:</p>
+<pre><code class="lang-js">// components/Root.js
+import { Observable } from &#39;rxjs&#39;;
+import { observe } from &#39;frint-react&#39;;
+
+function MyComponent(props) {
+  return (
+    &lt;p&gt;Name: {props.name}&lt;/p&gt;
+  );
+}
+
+export default observe(function (app) {
+  // `app` is our App&#39;s instance
+  const props = {
+    name: app.getName() // `MyAppNameHere`
+  };
+
+  // this function must always return an Observable of props
+  return Observable.of(props);
+})(MyComponent);
+</code></pre>
+<h3 id="render">Render</h3>
+<p>Now when your App gets rendered, your Root component would show your App&#39;s name:</p>
+<pre><code class="lang-js">// index.js
+import { render } from &#39;frint-react&#39;;
+
+import App from &#39;./app&#39;;
+
+const app = new App();
+render(app, document.getElementById(&#39;root&#39;));
+</code></pre>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        <strong>FrintJS</strong> by <a href="https://travix.com">Travix International B.V.</a>.
+        The source code is licensed under
+        <a href="https://github.com/Travix-International/frint/blob/master/LICENSE">MIT</a>.
+      </p>
+      <p>
+        <a class="icon" href="https://github.com/Travix-International/frint">
+          <i class="fa fa-github"></i>
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    <style>
+  .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-solarizedlight.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
+<script src="/js/site.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+<script type="text/javascript">
+docsearch({
+  apiKey: '897a7279c47670a5c4b474ee84350387',
+  indexName: 'frint.js',
+  inputSelector: '#doc-search-text-box',
+  debug: false // Set debug to true if you want to inspect the dropdown
+});
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-93673400-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Apps | Frint</title>
+  </head>
+
+  <body>
+    <nav class="nav">
+      <div class="container">
+        <div class="nav-left">
+  <a href="/" class="nav-item brand">
+    <img alt="Frint" class="dark" src="/img/frint-logo-7a7a7a.png" />
+    <img alt="Frint" class="light" src="/img/frint-logo-fff.png" />
+  </a>
+
+  <a href="/docs" class="nav-item is-tab">
+    Documentation
+  </a>
+
+  <a href="/guides" class="nav-item is-tab">
+    Guides
+  </a>
+
+  <a href="/repl" class="nav-item is-tab">
+    REPL
+  </a>
+
+  <a href="/about" class="nav-item is-tab">
+    About
+  </a>
+</div>
+
+<div class="nav-right">
+  <div class="field nav-item">
+    <p class="control has-icon">
+      <input id="doc-search-text-box" class="input" type="text" placeholder="Search...">
+      <span class="icon is-small">
+        <i class="fa fa-search"></i>
+      </span>
+    </p>
+  </div>
+</div>
+
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-one-quarter">
+            <div class="menu-container docs">
+  <aside class="menu docs">
+    <p class="menu-label">
+      Step by step guides
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/hello-world">Hello World</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Concepts
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/apps">Apps</a></li>
+      <li><a href="/guides/providers">Providers</a></li>
+      <li><a href="/guides/components">Components</a></li>
+      <li><a href="/guides/regions">Regions</a></li>
+      <li><a href="/guides/observables">Observables</a></li>
+      <li><a href="/guides/higher-order-components">Higher-Order Components</a></li>
+    </ul>
+
+    <p class="menu-label">
+      How TOs
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/state-management">State management</a></li>
+    </ul>
+
+    <ul class="menu-list">
+      <li><a href="/guides/routing">Routing</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Advanced
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/code-splitting">Code splitting</a></li>
+      <li><a href="/guides/async-loading">Async loading</a></li>
+    </ul>
+  </aside>
+</div>
+
+          </div>
+
+          <div class="column content">
+            <h1 id="apps">Apps</h1>
+<!-- MarkdownTOC depth=1 autolink=true bracket=round -->
+<ul>
+<li><a href="#what-is-an-app-">What is an App?</a></li>
+<li><a href="#illustration">Illustration</a></li>
+<li><a href="#how-to-create-an-app-">How to create an App?</a></li>
+<li><a href="#root-apps">Root Apps</a></li>
+<li><a href="#child-apps">Child Apps</a></li>
+</ul>
+<!-- /MarkdownTOC -->
+<h2 id="what-is-an-app-">What is an App?</h2>
+<p>Everything in Frint is wrapped inside an App. They contain all the bits and pieces in the form of <a href="../providers">providers</a>.</p>
+<p>An App can be of two types:</p>
+<ul>
+<li><strong>Root App</strong>: The root app.</li>
+<li><strong>Child App</strong>: Apps that get registered to the root app.</li>
+</ul>
+<h2 id="illustration">Illustration</h2>
+<p><img src="/img/frint-apps.png" alt="apps diagram"></p>
+<p>Illustration of a root app, and multiple child apps registering themselves with region name.</p>
+<p>We will see some code examples below.</p>
+<h2 id="how-to-create-an-app-">How to create an App?</h2>
+<p>An App can be created using the <code>frint</code> package:</p>
+<pre><code class="lang-js">import { createApp } from &#39;frint&#39;;
+
+const App = createApp({
+  name: &#39;MyAppName&#39;
+});
+</code></pre>
+<p>Now you can instantiate it:</p>
+<pre><code class="lang-js">const app = new App();
+const name = app.getName();
+console.log(name); // `MyAppName`
+</code></pre>
+<h2 id="root-apps">Root Apps</h2>
+<p>In any page at any given moment, there can be only one Root App. This is the top-most parent App, where other Apps can register themselves to.</p>
+<p>Let&#39;s create one:</p>
+<pre><code class="lang-js">import { createApp } from &#39;frint&#39;;
+
+const RootApp = createApp({
+  name: &#39;MyRootApp&#39;
+});
+</code></pre>
+<p>Now it can be instantiated:</p>
+<pre><code class="lang-js">window.app = new RootApp();
+</code></pre>
+<h2 id="child-apps">Child Apps</h2>
+<p>Child Apps are apps that get registered to the Root App.</p>
+<p>Child Apps can be created in the same way as Root Apps are created:</p>
+<pre><code class="lang-js">import { createApp } from &#39;frint&#39;;
+
+const App = createApp({
+  name: &#39;MyApp&#39;
+});
+</code></pre>
+<p>Now unlike Root Apps, child Apps are not instantiated manually. They are registered to Root Apps instead:</p>
+<pre><code class="lang-js">window.app.registerApp(App);
+</code></pre>
+<p>To access your App instance:</p>
+<pre><code class="lang-js">window.app.getAppOnceAvailable$(&#39;MyApp&#39;)
+  .subscribe(function (app) {
+    const name = app.getName();
+    console.log(name); // `MyApp`
+  });
+</code></pre>
+<p>We use observables, because an App may get registered at any time. Either at initial page load, or at a time in future asynchronously. They may even come from a separate bundle altogether.</p>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        <strong>FrintJS</strong> by <a href="https://travix.com">Travix International B.V.</a>.
+        The source code is licensed under
+        <a href="https://github.com/Travix-International/frint/blob/master/LICENSE">MIT</a>.
+      </p>
+      <p>
+        <a class="icon" href="https://github.com/Travix-International/frint">
+          <i class="fa fa-github"></i>
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    <style>
+  .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-solarizedlight.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
+<script src="/js/site.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+<script type="text/javascript">
+docsearch({
+  apiKey: '897a7279c47670a5c4b474ee84350387',
+  indexName: 'frint.js',
+  inputSelector: '#doc-search-text-box',
+  debug: false // Set debug to true if you want to inspect the dropdown
+});
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-93673400-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>

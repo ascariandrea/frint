@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>frint-cli | Frint</title>
+  </head>
+
+  <body>
+    <nav class="nav">
+      <div class="container">
+        <div class="nav-left">
+  <a href="/" class="nav-item brand">
+    <img alt="Frint" class="dark" src="/img/frint-logo-7a7a7a.png" />
+    <img alt="Frint" class="light" src="/img/frint-logo-fff.png" />
+  </a>
+
+  <a href="/docs" class="nav-item is-tab">
+    Documentation
+  </a>
+
+  <a href="/guides" class="nav-item is-tab">
+    Guides
+  </a>
+
+  <a href="/repl" class="nav-item is-tab">
+    REPL
+  </a>
+
+  <a href="/about" class="nav-item is-tab">
+    About
+  </a>
+</div>
+
+<div class="nav-right">
+  <div class="field nav-item">
+    <p class="control has-icon">
+      <input id="doc-search-text-box" class="input" type="text" placeholder="Search...">
+      <span class="icon is-small">
+        <i class="fa fa-search"></i>
+      </span>
+    </p>
+  </div>
+</div>
+
+      </div>
+    </nav>
+
+    <section class="section">
+      <div class="container">
+        <div class="columns">
+          <div class="column is-one-quarter">
+            <div class="menu-container docs">
+  <aside class="menu docs">
+    <p class="menu-label">
+      Quickstart
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/guides/hello-world">Hello World</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Packages
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/packages/frint">frint</a></li>
+      <li><a href="/docs/packages/frint-store">frint-store</a></li>
+      <li><a href="/docs/packages/frint-data">frint-data</a></li>
+      <li><a href="/docs/packages/frint-react">frint-react</a></li>
+      <li><a href="/docs/packages/frint-react-server">frint-react-server</a></li>
+      <li><a href="/docs/packages/frint-router">frint-router</a></li>
+      <li><a href="/docs/packages/frint-router-react">frint-router-react</a></li>
+      <li><a href="/docs/packages/frint-cli">frint-cli</a></li>
+      <li><a href="/docs/packages/frint-config">frint-config</a></li>
+      <li><a href="/docs/packages/frint-component-utils">frint-component-utils</a></li>
+      <li><a href="/docs/packages/frint-component-handlers">frint-component-handlers</a></li>
+      <li><a href="/docs/packages/frint-test-utils">frint-test-utils</a></li>
+      <li><a href="/docs/packages/frint-compat">frint-compat</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Migration
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/migration/v1">Migrating to v1.x</a></li>
+      <li><a href="/docs/migration/v2">Migrating to v2.x</a></li>
+      <li><a href="/docs/migration/v3">Migrating to v3.x</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Contributing
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/contributing/maintainers">Maintainers guide</a></li>
+    </ul>
+
+    <p class="menu-label">
+      Project
+    </p>
+
+    <ul class="menu-list">
+      <li><a href="/docs/changelog">Changelog</a></li>
+    </ul>
+  </aside>
+</div>
+
+          </div>
+
+          <div class="column content">
+            <h1 id="frint-cli">frint-cli</h1>
+<p><a href="https://www.npmjs.com/package/frint-cli"><img src="https://img.shields.io/npm/v/frint-cli.svg" alt="npm"></a></p>
+<blockquote>
+<p>CLI for Frint</p>
+</blockquote>
+<!-- MarkdownTOC autolink=true bracket=round -->
+<ul>
+<li><a href="#guide">Guide</a><ul>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#usage">Usage</a></li>
+<li><a href="#built-in-commands">Built-in commands</a></li>
+<li><a href="#using-plugins">Using plugins</a></li>
+<li><a href="#developing-your-own-plugin">Developing your own plugin</a></li>
+</ul>
+</li>
+</ul>
+<!-- /MarkdownTOC -->
+<hr>
+<h1 id="guide">Guide</h1>
+<h2 id="installation">Installation</h2>
+<p>With <a href="https://www.npmjs.com/">npm</a>:</p>
+<pre><code>$ npm install -g frint-cli
+</code></pre><h2 id="usage">Usage</h2>
+<p>From your Terminal:</p>
+<pre><code>$ frint
+</code></pre><p>Will list all the commands available to you.</p>
+<h2 id="built-in-commands">Built-in commands</h2>
+<h3 id="-init-"><code>init</code></h3>
+<p>Scaffolds a new FrintJS application in an empty directory:</p>
+<pre><code>$ mkdir my-directory &amp;&amp; cd my-directory
+
+$ frint init
+</code></pre><p>To scaffold a certain example, as available in the repository <a href="https://github.com/Travix-International/frint/tree/master/examples">here</a>:</p>
+<pre><code>$ frint init --example exampleName
+</code></pre><h3 id="-version-"><code>version</code></h3>
+<p>Shows the current version of <code>frint-cli</code>:</p>
+<pre><code>$ frint version
+</code></pre><h3 id="-help-"><code>help</code></h3>
+<p>Shows help text of commands:</p>
+<pre><code>$ frint help init
+$ frint help help
+</code></pre><h2 id="using-plugins">Using plugins</h2>
+<p>You can install <code>frint-cli</code> plugins just like a regular npm package in your project:</p>
+<pre><code>$ npm install --save frint-cli-hello
+</code></pre><h3 id="-frintrc-"><code>.frintrc</code></h3>
+<p>To register this new CLI plugin, update your <code>.frintrc</code> file in your project&#39;s root directory:</p>
+<pre><code class="lang-js">{
+  &quot;plugins&quot;: [
+    &quot;frint-cli-hello&quot;,
+    &quot;./some-relative/path&quot;
+  ]
+}
+</code></pre>
+<h3 id="run-the-plugin">Run the plugin</h3>
+<p>Now the <code>frint-cli-hello</code> plugin can be run as:</p>
+<pre><code>$ frint hello
+world
+</code></pre><h2 id="developing-your-own-plugin">Developing your own plugin</h2>
+<p>Building a plugin for <code>frint-cli</code>, is just like developing a regular FrintJS app.</p>
+<pre><code class="lang-js">// frint-cli-hello/index.js
+const createApp = require(&#39;frint&#39;).createApp;
+
+module.exports = createApp({
+  name: &#39;hello&#39;, // this is the subcommand name in `$ frint hello`
+
+  providers: [
+    {
+      name: &#39;summary&#39;,
+      useValue: &#39;Short help text&#39;,
+    },
+    {
+      name: &#39;description&#39;,
+      useValue: &#39;Long help text&#39;,
+    },
+    {
+      name: &#39;execute&#39;,
+      useFactory: function () {
+        return function () { // this returned function will be excuted
+          console.log(&#39;world!&#39;);
+        }
+      },
+    }
+  ],
+});
+</code></pre>
+<p>It is required that you have a provider called <code>execute</code>, which returns a function. This function will then be called when the subcommand is run.</p>
+<p>To register multiple commands from the same plugin, you can export an array of App classes.</p>
+<p>The <code>summary</code> and <code>description</code> is used when the user is trying to get help text by running:</p>
+<pre><code>$ frint help hello
+</code></pre><h3 id="providers-available-in-plugins">Providers available in plugins</h3>
+<ul>
+<li><code>console</code> (<code>Console</code>): The same <code>console</code> available in NodeJS globally</li>
+<li><code>pwd</code> (<code>String</code>): Current working directory</li>
+<li><code>config</code> (<code>Object</code>): As available in <code>.frintrc</code> file</li>
+<li><code>params</code> (<code>Object</code>): An <a href="https://www.npmjs.com/package/yargs">yargs</a> compatible object after parsing CLI options</li>
+<li><code>fs</code> (<code>Object</code>): Node&#39;s <code>fs</code> module</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        <strong>FrintJS</strong> by <a href="https://travix.com">Travix International B.V.</a>.
+        The source code is licensed under
+        <a href="https://github.com/Travix-International/frint/blob/master/LICENSE">MIT</a>.
+      </p>
+      <p>
+        <a class="icon" href="https://github.com/Travix-International/frint">
+          <i class="fa fa-github"></i>
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+    <style>
+  .github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/themes/prism-solarizedlight.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.css" />
+<link rel="stylesheet" href="/css/site.css" />
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.6.0/prism.min.js"></script>
+<script src="/js/site.js"></script>
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/2/docsearch.min.js"></script>
+<script type="text/javascript">
+docsearch({
+  apiKey: '897a7279c47670a5c4b474ee84350387',
+  indexName: 'frint.js',
+  inputSelector: '#doc-search-text-box',
+  debug: false // Set debug to true if you want to inspect the dropdown
+});
+</script>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-93673400-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+  </body>
+</html>
